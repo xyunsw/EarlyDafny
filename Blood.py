@@ -1,9 +1,10 @@
 from abc import ABC
 from enum import Enum
+from Donor import Donor
 import time
 
 class Blood(ABC):
-    def __init__(self, donor: Donor, use_by: int):
+    def __init__(self, donor: Donor):
         self._donor = donor
         self._add_time = int(time.time())
         self._use_by_time = 0

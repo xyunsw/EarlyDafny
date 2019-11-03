@@ -1,44 +1,12 @@
 from Donor import *
 from Blood import *
 
-class Inventory(object):
-    def __init__(self):
-        self.bloods = []
-
-
-    def donate_blood(self, donor_name: str, donor_id: str, use_by: int):
-        donor = Donor(donor_name, donor_id)
-        blood = Blood(donor, use_by)
-        self.bloods.append(blood)
-        
-
-    def request_blood(self, n_bags: int, blood_type: str) -> listOfBloodOrNone:
-        bloods = self.filter_blood(BloodToSendFilter(blood_type))
-        if n_bags > len(bloods) or n_bags <= 0:
-            return None
-        bloods_to_send = bloods[0:n_bags]
-        self.mark_bloods(bloods_to_send, BloodState.USED)
-        return bloods_to_send
-
-
-    def filter_blood(self, filter: BloodFilter) -> listOfBlood:
-        bloods = []
-        for blood in self.bloods:
-            if filter.check():
-                bloods.append(blood)
-        return bloods
-
-    def mark_bloods(self, bloods: bloodList, state: BloodState):
-        for blood in bloods:
-            blood.state = state
-
-
 
 class BloodFilter():
     def __init__(self):
         self.conditions = []
 
-    def add_condition(self, condition: function):
+    def add_condition(self, condition):
         self.conditions.add(condition)
 
     def check(self, blood: Blood) -> bool:
@@ -54,4 +22,37 @@ class BloodToSendFilter(BloodFilter):
         self.add_condition(lambda blood: blood.is_good_blood())
         self.add_condition(lambda blood: blood.type == blood_type)
         self.add_condition(lambda blood: blood.state == BloodState.IN_INVENTORY)
+
+
+class Inventory(object):
+    def __init__(self):
+        self.bloods = []
+
+
+    def add_blood(self, donor_name: str, donor_id: str):
+        donor = Donor(donor_name, donor_id)
+        blood = Blood(donor)
+        self.bloods.append(blood)
+        
+
+    def request_blood(self, n_bags: int, blood_type: str) -> list:
+        bloods = self.filter_blood(BloodToSendFilter(blood_type))
+        if n_bags > len(bloods) or n_bags <= 0:
+            return None
+        bloods_to_send = bloods[0:n_bags]
+        self.mark_bloods(bloods_to_send, BloodState.USED)
+        return bloods_to_send
+
+
+    def filter_blood(self, filter: BloodFilter) -> list:
+        bloods = []
+        for blood in self.bloods:
+            if filter.check():
+                bloods.append(blood)
+        return bloods
+
+    def mark_bloods(self, bloods: list, state: BloodState):
+        for blood in bloods:
+            blood.state = state
+
 
