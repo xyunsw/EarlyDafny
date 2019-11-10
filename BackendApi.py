@@ -24,5 +24,8 @@ class BackendApi():
             return {"success": False, "msg": "Invalid request"}
         return {"success": True, "blood": res}
 
+    def get_blood_public_info(self):
+        res = self._inventory.get_blood_public_info()
+        return {"success": True, "blood_types": res}
 
 

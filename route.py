@@ -21,5 +21,11 @@ def add_blood():
         api.add_blood(request.form)
         return render_template('add_blood.html', success=True)
 
-
-
+@page.route('/request_blood', methods=['GET', 'POST'])
+def request_blood():
+    if request.method == 'GET':
+        res = api.get_blood_public_info()
+        blood_types = res['blood_types']
+        return render_template('request_blood.html', blood_types=blood_types.keys())
+    else:
+        raise NotImplementedError()
