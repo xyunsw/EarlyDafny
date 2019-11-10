@@ -10,8 +10,8 @@ class Blood(ABC):
         self._use_by_time = 0
         self._state = BloodState.IN_INVENTORY
         self._test_state = BloodTestState.NOT_TESTED
-        self._feedback = None
-        self._type = None
+        self._feedback = ""
+        self._type = ""
 
     @property
     def donor(self):
@@ -25,9 +25,17 @@ class Blood(ABC):
     def test_state(self):
         return self._test_state
 
+    @test_state.setter
+    def test_state(self, test_state):
+        self._test_state = test_state
+
     @property
     def feedback(self):
-        return self.feedback
+        return self._feedback
+
+    @feedback.setter
+    def feedback(self, feedback):
+        self._feedback = feedback
     
     @property
     def type(self):
@@ -41,6 +49,14 @@ class Blood(ABC):
     def state(self):
         return self._state
 
+    @property
+    def use_by(self):
+        return self._use_by_time
+
+    @use_by.setter
+    def use_by(self, new_use_by):
+        self._use_by_time = new_use_by
+
     @state.setter
     def state(self, state):
         self._state = state
@@ -51,9 +67,8 @@ class Blood(ABC):
     def is_good_blood(self):
         return self._test_state == BloodTestState.GOOD
 
-    @feedback.setter
-    def feedback(self, feedback: str):
-        self.feedback = feedback
+    def serialize(self):
+        pass
 
 
 

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for
 from backend import api
 
 page = Blueprint('page', __name__, template_folder='templates')
@@ -29,3 +29,20 @@ def request_blood():
         return render_template('request_blood.html', blood_types=blood_types.keys())
     else:
         raise NotImplementedError()
+
+@page.route('/blood/<bid>', methods=['GET', 'POST'])
+def blood(bid: str):
+    if request.method == 'GET':
+        res = api.get_blood_by_id({"id": bid})
+        if not res['success']:
+            return render_template('error.html', err_msg=res['msg'])
+        else:
+            return render_template('blood.html', bid=bid, info=res)
+    else:
+        form = dict(request.form)
+        form['id'] = bid
+        api.update_blood(form)
+        return redirect(url_for('page.blood', bid=bid))
+
+
+

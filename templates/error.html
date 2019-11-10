@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h4>Error: {{ err_msg }}</h4>
+<a id="go_back" href="">Go back to home page</a>
+<script type="text/javascript">
+    let lnk = document.querySelector('#go_back');
+    lnk.textContent = "Go back to previous page";
+    lnk.addEventListener('click', function(event){
+        event.preventDefault();
+        window.history.back();
+    })
+</script>
+
+{% endblock %}

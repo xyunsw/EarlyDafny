@@ -37,6 +37,7 @@ class Inventory(object):
     def add_blood(self, donor_name: str, donor_id: str):
         donor = Donor(donor_name, donor_id)
         blood = Blood(donor)
+        print("add blood...")
         self.bloods.append(blood)
         
 
@@ -70,5 +71,13 @@ class Inventory(object):
             else:
                 blood_types[type] += 1
         return blood_types
+
+    def get_blood_by_id(self, id: int) -> Blood:
+        print(self.bloods)
+        return self.bloods[id]
+
+    def update_blood(self, id: int, new_blood: Blood):
+        print(self.bloods)
+        self.bloods[id] = new_blood
 
 

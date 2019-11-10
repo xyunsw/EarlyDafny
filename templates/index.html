@@ -6,8 +6,24 @@
     <a class="block" href="/add_blood">Add Blood</a>
     <a class="block" href="/request_blood">Request Blood</a>
     <a class="block" href="list_blood">List Blood</a>
-
+    <a id="blood_link" href="/blood">Blood@</a><input type="text" id="blood_id"><br />
 </div>
+
+<script type="text/javascript">
+    let bid_input = document.querySelector("#blood_id");
+    let blood_link = document.querySelector("#blood_link");
+    console.log("success");
+    blood_link.addEventListener('click', function(event){
+        event.preventDefault();
+        console.log("in event handler");
+        if (bid_input.value === "") {
+            window.location.href = blood_link.href;
+        }
+        else {
+            window.location.href = blood_link.href + `/${bid_input.value}`;
+        }
+    })
+</script>
 
 {% endblock %}
 
