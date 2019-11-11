@@ -1,0 +1,45 @@
+<table>
+    <thead>
+        <td>Blood id</td>
+        <td>Use By</td>
+        <td>State</td>
+        <td>Test state</td>
+        <td>Feedback</td>
+        <td>Type</td>
+    </thead>
+    {% for blood in bloods %}
+        <tr>
+            <td>{{ blood['id'] }}</td>
+            <td>{{ blood['use_by'] }}</td>
+            <td name="state">{{ blood['state'] }}</td>
+            <td name="test_state">{{ blood['test_state'] }}</td>
+            <td>{{ blood['feedback'] }}</td>
+            <td>{{ blood['type'] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<script type="text/javascript">
+    let state_table = {
+        "1": "in inventory",
+        "2": "testing",
+        "3": "used",
+        "4": "disposed"
+    }
+    let test_state_table = {
+        "1": "not tested",
+        "2": "Good blood",
+        "3": "Bad blood"
+    }
+    let states = document.getElementsByName('state');
+    for (let state of states) {
+        //state.textContent = state_table[state.textContent];
+    }
+    let test_states = document.getElementsByName('test_state');
+    for (let test_state of test_states) {
+        //test_state.textContent = test_state_table[test_state.textContent];
+    }
+</script>
+
+
+

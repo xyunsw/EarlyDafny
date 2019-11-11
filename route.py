@@ -26,9 +26,17 @@ def request_blood():
     if request.method == 'GET':
         res = api.get_blood_public_info()
         blood_types = res['blood_types']
+        print(blood_types)
         return render_template('request_blood.html', blood_types=blood_types.keys())
     else:
-        raise NotImplementedError()
+        data = {"blood_type": request.form['blood_type'], "n_bags": request.form['n_bags']}
+        org = {"name": request.form['org_name'], "address": request.form['org_address'], "phone": request.form['org_phone']}
+        data['org'] = org
+        res = api.request_blood(data)
+        if not res['success']:
+            return render_template('error.html', err_msg=res['msg'])
+        else:
+            return "success"
 
 @page.route('/blood/<bid>', methods=['GET', 'POST'])
 def blood(bid: str):
@@ -44,5 +52,13 @@ def blood(bid: str):
         api.update_blood(form)
         return redirect(url_for('page.blood', bid=bid))
 
+
+@page.route('/request/<id>', methods=['GET'])
+def show_request(id: str):
+    res = api.get_request_by_id({'id': id})
+    if not res['success']:
+        return render_template('error.html', err_msg=res['msg'])
+    else:
+        return render_template('request.html', bloods=res['bloods'], org=res['org'])
 
 

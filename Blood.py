@@ -7,7 +7,7 @@ class Blood(ABC):
     def __init__(self, donor: Donor):
         self._donor = donor
         self._add_time = int(time.time())
-        self._use_by_time = 0
+        self._use_by_time = 99999999999
         self._state = BloodState.IN_INVENTORY
         self._test_state = BloodTestState.NOT_TESTED
         self._feedback = ""
@@ -27,7 +27,12 @@ class Blood(ABC):
 
     @test_state.setter
     def test_state(self, test_state):
-        self._test_state = test_state
+        if isinstance(test_state, int):
+            self._test_state = BloodTestState(test_state)
+        elif isinstance(test_state, BloodTestState):
+            self._test_state = test_state
+        else:
+            raise TypeError(f"unexpected type of test_state: {type(test_state)}")
 
     @property
     def feedback(self):
@@ -59,12 +64,18 @@ class Blood(ABC):
 
     @state.setter
     def state(self, state):
-        self._state = state
+        if isinstance(state, int):
+            self._state = BloodState(state)
+        elif isinstance(state, BloodState):
+            self._state = state
+        else:
+            raise TypeError(f"unexpected type of state: {type(state)}")
 
     def is_expired(self):
         return int(time.time()) >= self._use_by_time
 
     def is_good_blood(self):
+        #print(f"my state is {self._test_state}, good is {BloodTestState.GOOD}, equals? {BloodTestState.GOOD == self._test_state}")
         return self._test_state == BloodTestState.GOOD
 
     def serialize(self):

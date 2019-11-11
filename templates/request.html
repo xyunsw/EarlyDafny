@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Request {{ id }}</h2>
+<div>
+    <label>Requested blood</label>
+    {% include "blood_list.html" %}
+</div>
+<div>
+    <label>Organization name: {{ org['name'] }}</label><br />
+    <label>Organization address: {{ org['address'] }}</label> <br />
+    <label>Organization phone: {{ org['phone'] }}</label> <br />
+</div>
+
+{% endblock %}
+
+

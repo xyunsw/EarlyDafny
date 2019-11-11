@@ -6,7 +6,7 @@
     <form method="POST">
         <div style="display: flex; margin-bottom: 25px">
             <label>Type: </label>
-            <select name="blood_type">
+            <select style="margin-left: 25px" name="blood_type">
                 {% for type in blood_types %}
                     <option value="{{ type }}">{{type}}</option>
                 {% endfor %}
@@ -14,7 +14,19 @@
         </div>
         <div style="display: flex; margin-bottom: 25px">
             <label>Amount: </label>
-            <input style="margin-left: 25px" type="text" name="donor_name" />
+            <input style="margin-left: 25px" type="text" name="n_bags" />
+        </div>
+        <div style="display: flex; margin-bottom: 25px">
+            <label>Organization name: </label>
+            <input style="margin-left: 25px" type="text" name="org_name" />
+        </div>
+        <div style="display: flex; margin-bottom: 25px">
+            <label>Organization address: </label>
+            <input style="margin-left: 25px" type="text" name="org_address" />
+        </div>
+        <div style="display: flex; margin-bottom: 25px">
+            <label>Organization phone: </label>
+            <input style="margin-left: 25px" type="text" name="org_phone" />
         </div>
         <div style="display: flex; margin-bottom: 25px">
             <input type="submit" />

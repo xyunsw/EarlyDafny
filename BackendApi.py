@@ -1,5 +1,6 @@
 from Inventory import *
 from Blood import *
+from Organization import *
 import sys
 
 
@@ -18,7 +19,8 @@ class BackendApi():
         }
 
     def request_blood(self, data: dict):
-        res = self._inventory.request_blood(data['n_bags'], data['blood_type'])
+        org = Organization(data['org']['name'], data['org']['address'], data['org']['phone'])
+        res = self._inventory.request_blood(int(data['n_bags']), data['blood_type'], org)
         dbgprint(f"request blood: {data}")
         if res is None:
             return {"success": False, "msg": "Invalid request"}
@@ -28,13 +30,8 @@ class BackendApi():
         res = self._inventory.get_blood_public_info()
         return {"success": True, "blood_types": res}
 
-    def get_blood_by_id(self, data: dict):
-        id = int(data['id'])
-        try:
-            blood = self._inventory.get_blood_by_id(id)
-        except:
-            return {"success": False, "msg": f"blood of id {id} not found"}
-        info = {"success": True}
+    def blood_to_dict(self, blood: Blood) -> dict:
+        info = {}
         info['use_by'] = blood.use_by
         info['state'] = blood.state
         info['test_state'] = blood.test_state
@@ -42,17 +39,42 @@ class BackendApi():
         info['type'] = blood.type
         return info
 
+    def get_blood_by_id(self, data: dict):
+        id = int(data['id'])
+        try:
+            blood = self._inventory.get_blood_by_id(id)
+        except:
+            return {"success": False, "msg": f"blood of id {id} not found"}
+        info = {"success": True}
+        info.update(self.blood_to_dict(blood))
+        return info
+
     def update_blood(self, data: dict):
         id = int(data['id'])
         # fixme
         new_blood: Blood = Blood(None)
-        new_blood.use_by = data['use_by']
-        new_blood.state = data['state']
-        new_blood.test_state = data['test_state']
+        new_blood.use_by = int(data['use_by'])
+        new_blood.state = int(data['state'])
+        new_blood.test_state = int(data['test_state'])
         new_blood.feedback = data['feedback']
         new_blood.type = data['type']
         res = self._inventory.update_blood(id, new_blood)
         return {"success": True}
 
+    def get_request_by_id(self, data: dict) -> dict:
+        id = int(data['id'])
+        try:
+            req = self._inventory.get_request_by_id(id)
+        except:
+            return {"success": False, "msg": f"request of id {id} not found"}
+        info = {"success": True}
+        bloods = []
+        for blood in req.bloods:
+            bloods.append(self.blood_to_dict(blood))
+        info['bloods'] = bloods
+        info['id'] = id
+        org = {"name": req.org.name, "address": req.org.address, "phone": req.org.phone}
+        info['org'] = org
+        return info
 
 
