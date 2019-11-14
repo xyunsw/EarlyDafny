@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, Response
 from backend import api
+import json
 
 page = Blueprint('page', __name__, template_folder='templates')
 
@@ -60,5 +61,19 @@ def show_request(id: str):
         return render_template('error.html', err_msg=res['msg'])
     else:
         return render_template('request.html', bloods=res['bloods'], org=res['org'])
+
+
+@page.route('/blood_inventory')
+def blood_inventory():
+    return render_template('blood_inventory.html')
+
+
+@page.route('/api/get_bloods_by_conditions', methods=['POST'])
+def get_bloods_by_conditions():
+    bloods = api.get_bloods_by_conditions(request.json)
+    bloods = bloods['bloods']
+    bloods = json.dumps(bloods)
+    res = Response(bloods, 200, content_type="application/json")
+    return res
 
 

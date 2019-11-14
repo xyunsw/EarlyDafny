@@ -85,4 +85,13 @@ class BackendApi():
         info['org'] = org
         return info
 
+    def get_bloods_by_conditions(self, opt: dict) -> dict:
+        res = self._inventory.get_bloods_by_conditions(opt)
+        bloods = {'success': True}
+        size = len(res)
+        for i in range(size):
+            b: Blood = res[i]
+            res[i] = self.blood_to_dict(b)
+        bloods['bloods'] = res
+        return bloods
 

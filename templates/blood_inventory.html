@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Blood Inventory</h2>
+
+<!--summary here-->
+
+
+<!--condition here-->
+<div>
+    <h4>Filter by</h4>
+    <div>
+        <label style="width: 300px">ID</label>
+        <input type="text" id="id">
+    </div>
+    <div>
+        <label style="width: 30px">Type</label>
+        <input type="text" id="type">
+    </div>
+    <div>
+        <label style="width: 30px">Expired</label>
+        <input type="checkbox" id="isexpired">
+    </div>
+    <div style="display: flex">
+        <label style="width: 200px">State: </label>
+        <select id="state">
+            <option value='0'></option>
+            <option value='1'>In inventory</option>
+            <option value='2'>Testing</option>
+            <option value='3'>Used</option>
+            <option value='4'>Disposed</option>
+        </select>
+    </div>
+    <div>
+        <label style="width: 200px">Test State: </label>
+        <select id="test_state">
+            <option value='0'></option>
+            <option value='1'>Not tested</option>
+            <option value='2'>Good</option>
+            <option value='3'>Bad</option>
+        </select>
+    </div>
+</div>
+
+<div>
+    <h4>Order by</h4>
+    <select id="order_by">
+        <option value='0'></option>
+        <option value="use_by">Use By</option>
+        <option value="add_time">Add time</option>
+    </select>
+    <select id="ascdesc">
+        <option value='0'></option>
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+    </select>
+</div>
+
+
+<!--blood list here-->
+<table>
+    <thead>
+        <td>Id</td>
+        <td>Use By</td>
+        <td>State</td>
+        <td>Test state</td>
+        <td>Feedback</td>
+        <td>Type</td>
+    </thead>
+    <tbody id="blood_table">
+
+    </tbody>
+</table>
+
+
+
+
+<script type="text/javascript">
+async function getBloodList(opt) {
+    let opt_json = JSON.stringify(opt);
+    let res = await fetch('/api/get_bloods_by_conditions', {
+        "body": opt_json,
+        "headers": {"content-type": "application/json"},
+        "method": "POST"
+    });
+    res = await res.json()
+    return res;
+}
+
+async function renderBloodList(blood_list) {
+    let blood_table = document.getElementById("blood_table");
+    blood_table.innerHTML = "";
+    let attr_list = ['id', 'use_by', 'state', 'test_state', 'feedback', 'type'];
+    for (let blood of blood_list) {
+        let tr = document.createElement('tr');
+        blood_table.appendChild(tr);
+        for (let attr of attr_list) {
+            let td = document.createElement("td");
+            tr.appendChild(td);
+            if (attr === "id") {
+                let a = document.createElement('a');
+                a.href = '/blood/' + blood[attr];
+                a.textContent = blood[attr];
+                td.appendChild(a);
+            }
+            else {
+                td.textContent = blood[attr];
+            }
+        }
+    }
+}
+
+let id_input = document.getElementById('id');
+let type_input = document.getElementById('type');
+let isexpired_input = document.getElementById('isexpired');
+let state_input = document.getElementById('state');
+let test_state_input = document.getElementById('test_state');
+let order_by_input = document.getElementById('order_by');
+let ascdesc_input = document.getElementById('ascdesc');
+
+var isUpdating = false;
+async function update_blood() {
+    if (!isUpdating) {
+        isUpdating = true;
+    }
+    else {
+        return;
+    }
+    // filter by id, type, isexpired, state, test_state
+    // order by use_by, add_time / ascdec
+
+    let opt = {}
+    let id = id_input.value;
+    if (id !== "") {
+        opt.id = id;
+    }
+    let type = type_input.value;
+    if (type !== "") {
+        opt.type = type;
+    }
+    let isexpired = isexpired_input.checked;
+    if (isexpired) {
+        opt.isexpired = true;
+    }
+    let state = state_input.selectedOptions[0].value;
+    if (state !== '0') {
+        opt.state = state;
+    }
+    let test_state = test_state_input.selectedOptions[0].value;
+    if (test_state !== '0') {
+        opt.test_state = test_state;
+    }
+    let order_by = order_by_input.selectedOptions[0].value;
+    if (order_by !== '0') {
+        opt.order_by = order_by;
+    }
+    let ascdesc = ascdesc_input.selectedOptions[0].value;
+    if (ascdesc !== '0') {
+        opt.ascdesc = ascdesc;
+    }
+
+    try {
+        let res = await getBloodList(opt);
+        await renderBloodList(res);
+    }
+    catch (e) {
+        console.error(e);
+    }
+    finally {
+        isUpdating = false;
+    }
+
+}
+
+update_blood();
+
+id_input.addEventListener("keyup", update_blood);
+type_input.addEventListener("keyup", update_blood);
+isexpired_input.addEventListener("click", update_blood);
+state_input.addEventListener("change", update_blood);
+test_state_input.addEventListener("change", update_blood);
+order_by_input.addEventListener("change", update_blood);
+ascdesc_input.addEventListener("change", update_blood);
+
+</script>
+
+
+
+
+
+{% endblock %}
+
+

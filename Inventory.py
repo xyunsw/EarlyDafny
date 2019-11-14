@@ -8,14 +8,26 @@ class BloodFilter():
     def __init__(self):
         self.conditions = []
 
+    # add a conjunctive condition
+    # condition is a function that takes blood as argument
+    # and returns True or False to indicate whether this bag 
+    # of blood satisfies this condition.
     def add_condition(self, condition):
         self.conditions.append(condition)
 
+    # check if blood satisfies all conditions
     def check(self, blood: Blood) -> bool:
         for c in self.conditions:
             if not c(blood):
                 return False
         return True
+
+    def filter(self, bloods: list) -> list:
+        res = []
+        for blood in bloods:
+            if self.check(blood):
+                res.append(blood)
+        return res
 
 
 
@@ -95,4 +107,50 @@ class Inventory(object):
     def get_request_by_id(self, id: int) -> Request:
         return self._requests[id]
 
+    # see blood_inventory.html to check what are inside opt
+    def get_bloods_by_conditions(self, opt: dict) -> list:
+        bf = BloodFilter()
+        res = opt.get('id', None)
+        # python's variable capture in lambda doesn't seem to work as expected
+        if res is not None:
+            s1 = res
+            bf.add_condition(lambda blood: blood.id == int(s1))
+        res = opt.get('type')
+        if res is not None:
+            s2 = res
+            bf.add_condition(lambda blood: blood.type == str(s2))
+        res = opt.get('isexpired', None)
+        if res is not None:
+            bf.add_condition(lambda blood: blood.is_expired())
+        res = opt.get('state', None)
+        if res is not None:
+            #print(f'res is : {res}')
+            s3 = int(res)
+            bf.add_condition(lambda blood: blood.state.value == int(s3))
+        res = opt.get('test_state', None)
+        if res is not None:
+            s4 = int(res)
+            bf.add_condition(lambda blood: blood.test_state.value == int(s4))
+        
+        bloods: list = bf.filter(self.bloods)
+
+        ascdesc = opt.get('ascdesc', None)
+        if ascdesc is None or ascdesc == 'asc':
+            reverse = False
+        else:
+            reverse = True
+        # I'm temporarily using build-in sort, but a dafny version
+        # needs to be implemented and I will port it to here.
+        order_by = opt.get('order_by', None)
+        if order_by is not None:
+            if order_by == 'use_by':
+                bloods.sort(key=lambda blood: blood.use_by, reverse=reverse)
+            else:
+                bloods.sort(key=lambda blood: blood.add_time, reverse=reverse)
+        
+        return bloods
+        
+
+
+        
 
