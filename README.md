@@ -1,3 +1,6 @@
+![Real vampire](/static/vampire_logo.jpg)
+![vampire](/static/sophie_twilight.png)
+
 # EarlyDafny - SENG2011 Project
 
 ### How to run
