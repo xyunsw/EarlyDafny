@@ -44,8 +44,9 @@ class Inventory(object):
 
     def add_blood(self, donor_name: str, donor_id: str):
         donor = Donor(donor_name, donor_id)
-        blood = Blood(donor)
+        blood = Blood(len(self.bloods), donor)
         print("add blood...")
+
         self.bloods.append(blood)
         
 
@@ -55,6 +56,7 @@ class Inventory(object):
             return None
         bloods_to_send = bloods[0:n_bags]
         self.mark_bloods(bloods_to_send, BloodState.USED)
+        print(f"marking blood: {bloods_to_send}")
         self._requests.append(Request(org, bloods_to_send))
         return bloods_to_send
 
@@ -67,7 +69,7 @@ class Inventory(object):
         return bloods
 
     def mark_bloods(self, bloods: list, state: BloodState):
-        for blood in self.bloods:
+        for blood in bloods:
             blood.state = state
 
     def get_blood_public_info(self) -> dict:
@@ -88,6 +90,7 @@ class Inventory(object):
     def update_blood(self, id: int, new_blood: Blood):
         print(self.bloods)
         self.bloods[id] = new_blood
+        new_blood.id = id
 
     def get_request_by_id(self, id: int) -> Request:
         return self._requests[id]

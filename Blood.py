@@ -4,14 +4,15 @@ from Donor import Donor
 import time
 
 class Blood(ABC):
-    def __init__(self, donor: Donor):
+    def __init__(self, id: int, donor: Donor):
         self._donor = donor
         self._add_time = int(time.time())
-        self._use_by_time = 99999999999
+        self._use_by_time = -1
         self._state = BloodState.IN_INVENTORY
         self._test_state = BloodTestState.NOT_TESTED
         self._feedback = ""
         self._type = ""
+        self._id = int(id)
 
     @property
     def donor(self):
@@ -33,6 +34,14 @@ class Blood(ABC):
             self._test_state = test_state
         else:
             raise TypeError(f"unexpected type of test_state: {type(test_state)}")
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, id):
+        self._id = int(id)
 
     @property
     def feedback(self):
@@ -66,6 +75,7 @@ class Blood(ABC):
     def state(self, state):
         if isinstance(state, int):
             self._state = BloodState(state)
+            print(f'setting state {state}/{self._state}')
         elif isinstance(state, BloodState):
             self._state = state
         else:
@@ -88,11 +98,17 @@ class BloodTestState(Enum):
     GOOD = 2
     BAD = 3
 
+    def __str__(self):
+        return self.name
+
 
 class BloodState(Enum):
     IN_INVENTORY = 1
     TESTING = 2
     USED = 3
     DISPOSED = 4
+
+    def __str__(self):
+        return self.name
 
 
