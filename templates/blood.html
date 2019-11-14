@@ -53,6 +53,9 @@
         }
         select_opt("state", "{{ info['state'] }}");
         select_opt("test_state", "{{ info['test_state'] }}");
+
+        let use_by = document.getElementsByName("use_by")[0];
+        mutubleElemTimeTransfer(use_by, "value");
     </script>
 </div>
 

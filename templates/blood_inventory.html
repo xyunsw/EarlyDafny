@@ -105,6 +105,15 @@ async function renderBloodList(blood_list) {
             }
             else {
                 td.textContent = blood[attr];
+                if (attr === "use_by") {
+                    immutubleElemTimeTransfer(td, "textContent");
+                }
+                else if(attr === "state") {
+                    td.textContent = state_table[td.textContent];
+                }
+                else if (attr === "test_state") {
+                    td.textContent = test_state_table[td.textContent];
+                }
             }
         }
     }
