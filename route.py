@@ -76,4 +76,7 @@ def get_bloods_by_conditions():
     res = Response(bloods, 200, content_type="application/json")
     return res
 
-
+@page.route('/requests', methods=['GET'])
+def show_requests():
+    res = api.get_request_list()
+    return render_template("requests.html", requests=res['requests'])

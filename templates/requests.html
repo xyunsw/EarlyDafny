@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Request history</h2>
+<div>
+    <table>
+        <thead>
+            <td>ID</td>
+            <td>time</td>
+            <td>Type</td>
+            <td>Num of bags</td>
+        </thead>
+        <tbody>
+            {% for r in requests %}
+            <tr>
+                <td><a href="{{ url_for('page.show_request', id=r['id']) }}">{{ r['id'] }}</a></td>
+                <td class="immutable_timestamp">{{ r['time'] }}</td>
+                <td>{{ r['type'] }}</td>
+                <td>{{ r['n_bags'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+let tds = document.getElementsByClassName("immutable_timestamp");
+for (let td of tds) {
+    immutubleElemTimeTransfer(td, "textContent");
+}
+</script>
+
+{% endblock %}
+
+

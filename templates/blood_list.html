@@ -10,7 +10,7 @@
     {% for blood in bloods %}
         <tr>
             <td>{{ blood['id'] }}</td>
-            <td>{{ blood['use_by'] }}</td>
+            <td class="immutable_timestamp">{{ blood['use_by'] }}</td>
             <td name="state">{{ blood['state'] }}</td>
             <td name="test_state">{{ blood['test_state'] }}</td>
             <td>{{ blood['feedback'] }}</td>
@@ -20,24 +20,30 @@
 </table>
 
 <script type="text/javascript">
-    let state_table = {
-        "1": "in inventory",
-        "2": "testing",
-        "3": "used",
-        "4": "disposed"
-    }
-    let test_state_table = {
-        "1": "not tested",
-        "2": "Good blood",
-        "3": "Bad blood"
-    }
+    // already in base.js
+    // let state_table = {
+    //     "1": "in inventory",
+    //     "2": "testing",
+    //     "3": "used",
+    //     "4": "disposed"
+    // }
+    // let test_state_table = {
+    //     "1": "not tested",
+    //     "2": "Good blood",
+    //     "3": "Bad blood"
+    // }
     let states = document.getElementsByName('state');
     for (let state of states) {
-        //state.textContent = state_table[state.textContent];
+        state.textContent = state_table[state.textContent];
     }
     let test_states = document.getElementsByName('test_state');
     for (let test_state of test_states) {
-        //test_state.textContent = test_state_table[test_state.textContent];
+        test_state.textContent = test_state_table[test_state.textContent];
+    }
+
+    let tds = document.getElementsByClassName("immutable_timestamp");
+    for (let td of tds) {
+        immutubleElemTimeTransfer(td, "textContent");
     }
 </script>
 

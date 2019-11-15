@@ -68,6 +68,21 @@ class BackendApi():
         res = self._inventory.update_blood(id, new_blood)
         return {"success": True}
 
+    def request_to_dict(self, req: Request) -> dict:
+        info = {}
+        bloods = []
+        for blood in req.bloods:
+            bloods.append(self.blood_to_dict(blood))
+        b: Blood = req.bloods[0]
+        info['type'] = b.type
+        info['time'] = req.time
+        info['n_bags'] = req.n_bags
+        info['bloods'] = bloods
+        info['id'] = req.id
+        org = {"name": req.org.name, "address": req.org.address, "phone": req.org.phone}
+        info['org'] = org
+        return info
+
     def get_request_by_id(self, data: dict) -> dict:
         print(f"get_request_by_id: we are using inventory {self}")
         id = int(data['id'])
@@ -76,13 +91,20 @@ class BackendApi():
         except:
             return {"success": False, "msg": f"request of id {id} not found"}
         info = {"success": True}
-        bloods = []
-        for blood in req.bloods:
-            bloods.append(self.blood_to_dict(blood))
-        info['bloods'] = bloods
-        info['id'] = id
-        org = {"name": req.org.name, "address": req.org.address, "phone": req.org.phone}
-        info['org'] = org
+        # bloods = []
+        # for blood in req.bloods:
+        #     bloods.append(self.blood_to_dict(blood))
+        # info['bloods'] = bloods
+        # info['id'] = id
+        # org = {"name": req.org.name, "address": req.org.address, "phone": req.org.phone}
+        # info['org'] = org
+        info.update(self.request_to_dict(req))
+        return info
+
+    def get_request_list(self) -> dict:
+        res = self._inventory.get_request_list()
+        reqs = [self.request_to_dict(req) for req in res]
+        info = {"success": True, "requests": reqs}
         return info
 
     def get_bloods_by_conditions(self, opt: dict) -> dict:

@@ -69,7 +69,8 @@ class Inventory(object):
         bloods_to_send = bloods[0:n_bags]
         self.mark_bloods(bloods_to_send, BloodState.USED)
         print(f"marking blood: {bloods_to_send}")
-        self._requests.append(Request(org, bloods_to_send))
+        size = len(self._requests)
+        self._requests.append(Request(size, org, bloods_to_send))
         return bloods_to_send
 
 
@@ -106,6 +107,10 @@ class Inventory(object):
 
     def get_request_by_id(self, id: int) -> Request:
         return self._requests[id]
+
+    def get_request_list(self) -> list:
+        return self._requests
+
 
     # see blood_inventory.html to check what are inside opt
     def get_bloods_by_conditions(self, opt: dict) -> list:
