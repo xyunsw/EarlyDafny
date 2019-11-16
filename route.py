@@ -24,11 +24,10 @@ def add_blood():
 
 @page.route('/request_blood', methods=['GET', 'POST'])
 def request_blood():
+    blood_types = api.get_blood_level_by({'cat': 'type', 'filter': 'BloodToSend'})
     if request.method == 'GET':
-        res = api.get_blood_public_info()
-        blood_types = res['blood_types']
         print(blood_types)
-        return render_template('request_blood.html', blood_types=blood_types.keys())
+        return render_template('request_blood.html', blood_types=blood_types)
     else:
         data = {"blood_type": request.form['blood_type'], "n_bags": request.form['n_bags']}
         org = {"name": request.form['org_name'], "address": request.form['org_address'], "phone": request.form['org_phone']}
@@ -37,7 +36,8 @@ def request_blood():
         if not res['success']:
             return render_template('error.html', err_msg=res['msg'])
         else:
-            return "success"
+            blood_types = api.get_blood_level_by({'cat': 'type', 'filter': 'BloodToSend'})
+            return render_template('request_blood.html', blood_types=blood_types, success=True)
 
 @page.route('/blood/<bid>', methods=['GET', 'POST'])
 def blood(bid: str):
@@ -80,3 +80,13 @@ def get_bloods_by_conditions():
 def show_requests():
     res = api.get_request_list()
     return render_template("requests.html", requests=res['requests'])
+
+@page.route('/api/get_blood_level_by', methods=['POST'])
+def get_blood_level_by():
+    res = api.get_blood_level_by(request.json)
+    return Response(json.dumps(res), 200, content_type="application/json")
+
+
+
+
+

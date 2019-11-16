@@ -1,0 +1,58 @@
+<table>
+    <thead>
+        <td>Type</td>
+        <td>Amount (bags)</td>
+    </thead>
+    <tbody id="summary">
+
+    </tbody>
+</table>
+
+<script>
+let ft = undefined;
+try {
+    ft = summary_filter;
+}
+catch (e) {
+
+}
+async function get_blood_summary(summary_filter) {
+    let data = {
+        cat: "type"
+    }
+    if (summary_filter !== undefined) {
+        data.filter = summary_filter;
+    }
+    let res = await fetch('/api/get_blood_level_by', {
+        body: JSON.stringify(data),
+        method: "POST",
+        headers: {"content-type": "application/json"}
+    });
+    res = await res.json();
+    return res;
+}
+
+async function render_summary(data) {
+    for (let type in data) {
+        let summary = document.getElementById("summary");
+        let tr = document.createElement('tr');
+        summary.appendChild(tr);
+        let td = document.createElement('td');
+        td.textContent = type;
+        tr.appendChild(td);
+        td = document.createElement('td');
+        td.textContent = data[type];
+        tr.appendChild(td);
+    }
+}
+
+get_blood_summary(ft).then(res => {
+    render_summary(res);
+});
+
+
+</script>
+
+
+
+

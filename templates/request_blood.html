@@ -2,13 +2,23 @@
 {% block content %}
 
 <h2>Request blood</h2>
+
+<div>
+    <script type="text/javascript">
+    let summary_filter = "BloodToSend";
+    </script>
+    {% include "blood_inventory_summary.html" %}
+</div>
+
 <div>
     <form method="POST">
         <div style="display: flex; margin-bottom: 25px">
             <label>Type: </label>
             <select style="margin-left: 25px" name="blood_type">
                 {% for type in blood_types %}
-                    <option value="{{ type }}">{{type}}</option>
+                    {% if blood_types[type] > 0 %}
+                    <option value="{{ type }}">{{type}} {{blood_types[type]}}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
         </div>
@@ -31,7 +41,7 @@
         <div style="display: flex; margin-bottom: 25px">
             <input type="submit" />
             {% if success %}
-            <div style="color: green">submitted</div>
+            <div style="color: green; margin-left: 30px">submitted</div>
             {% endif %}
         </div>
     </form>

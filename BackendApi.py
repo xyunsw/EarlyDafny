@@ -11,6 +11,9 @@ class BackendApi():
     def __init__(self):
         self._inventory = Inventory()
         print(f"********* we are using inventory {self}")
+
+    def start_level_checking(self):
+        self._inventory.start_checking()
     
     def add_blood(self, data: dict):
         res = self._inventory.add_blood(data['donor_name'], data['donor_id'])
@@ -21,15 +24,21 @@ class BackendApi():
 
     def request_blood(self, data: dict):
         print(f"request_blood: we are using inventory {self}")
+        try:
+            n_bags = int(data['n_bags'])
+            if n_bags < 0:
+                raise ValueError()
+        except:
+            return {"success": False, "msg": "Invalid amount"}
         org = Organization(data['org']['name'], data['org']['address'], data['org']['phone'])
-        res = self._inventory.request_blood(int(data['n_bags']), data['blood_type'], org)
+        res = self._inventory.request_blood(n_bags, data['blood_type'], org)
         dbgprint(f"request blood: {data}")
         if res is None:
-            return {"success": False, "msg": "Invalid request"}
+            return {"success": False, "msg": "Insufficient blood"}
         return {"success": True, "blood": res}
 
     def get_blood_public_info(self):
-        res = self._inventory.get_blood_public_info()
+        res = self._inventory.get_blood_level_by("type")
         return {"success": True, "blood_types": res}
 
     def blood_to_dict(self, blood: Blood) -> dict:
@@ -117,3 +126,12 @@ class BackendApi():
         bloods['bloods'] = res
         return bloods
 
+    def get_blood_level_by(self, data: dict) -> dict:
+        filter = data.get('filter', None)
+        if filter == 'BloodToSend':
+            ft = BloodToSendFilter()
+            bloods = ft.filter(self._inventory.bloods)
+            res = self._inventory.get_blood_level_by(data['cat'], bloods)
+        else:
+            res = res = self._inventory.get_blood_level_by(data['cat'])
+        return res
