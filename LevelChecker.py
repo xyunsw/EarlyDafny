@@ -16,13 +16,14 @@ class LevelChecker(object):
         for blood in self._inventory.bloods:
             types.add(blood.type)
         for t in types:
-            res = self.check_level_by_type(t)
-            if res == "critical3":
-                self.action_critical3(t)
-            if res == "critical2":
-                self.action_critical2(t)
-            if res == "critical1":
-                self.action_critical1(t)
+            if t != "":
+                res = self.check_level_by_type(t)
+                if res == "critical3":
+                    self.action_critical3(t)
+                if res == "critical2":
+                    self.action_critical2(t)
+                if res == "critical1":
+                    self.action_critical1(t)
 
     def check_level_by_type(self, blood_type: str):
         fb = BloodToSendFilter(blood_type)

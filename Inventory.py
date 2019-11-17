@@ -41,12 +41,12 @@ class Inventory(object):
             print("checking...")
             sleep(6.00000)
 
-    def add_blood(self, donor_name: str, donor_id: str):
+    def add_blood(self, donor_name: str, donor_id: str) -> int:
         donor = Donor(donor_name, donor_id)
         blood = Blood(len(self._bloods), donor)
         print("add blood...")
-
         self._bloods.append(blood)
+        return len(self._bloods) - 1
         
 
     def request_blood(self, n_bags: int, blood_type: str, org: Organization) -> list:
@@ -100,11 +100,9 @@ class Inventory(object):
             raise NotImplementedError()
 
     def get_blood_by_id(self, id: int) -> Blood:
-        print(self._bloods)
         return self._bloods[id]
 
     def update_blood(self, id: int, new_blood: Blood):
-        print(self._bloods)
         self._bloods[id] = new_blood
         new_blood.id = id
 

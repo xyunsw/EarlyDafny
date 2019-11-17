@@ -19,7 +19,8 @@ class BackendApi():
         res = self._inventory.add_blood(data['donor_name'], data['donor_id'])
         dbgprint(f"add blood: {data}")
         return {
-            "success": True
+            "success": True,
+            "id": res
         }
 
     def request_blood(self, data: dict):
@@ -65,7 +66,6 @@ class BackendApi():
         return info
 
     def update_blood(self, data: dict):
-        print(f"update_blood: we are using inventory {self}")
         id = int(data['id'])
         # fixme
         new_blood: Blood = self._inventory.get_blood_by_id(id)

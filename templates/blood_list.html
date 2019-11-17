@@ -9,7 +9,7 @@
     </thead>
     {% for blood in bloods %}
         <tr>
-            <td>{{ blood['id'] }}</td>
+            <td><a href="/blood/{{ blood['id'] }}">{{ blood['id'] }}</a></td>
             <td class="immutable_timestamp">{{ blood['use_by'] }}</td>
             <td name="state">{{ blood['state'] }}</td>
             <td name="test_state">{{ blood['test_state'] }}</td>
