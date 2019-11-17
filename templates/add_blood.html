@@ -15,7 +15,7 @@
         <div style="display: flex; margin-bottom: 25px">
             <input type="submit" />
             {% if success %}
-            <div style="color: green">submitted</div>
+            <div style="color: green; margin-left: 20px;">submitted, blood id: <a href="/blood/{{ id }}">{{ id }}</a></div>
             {% endif %}
         </div>
     </form>

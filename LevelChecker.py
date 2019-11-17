@@ -4,9 +4,11 @@ from Inventory import *
 from BloodFilter import *
 
 class LevelChecker(object):
-    CRITICAL1 = 2000
-    CRITICAL2 = 1000
-    CRITICAL3 = 500
+    # the browser will be stucked if there are too many bags of blood...
+    # so I'm going to reduce the critical value
+    CRITICAL1 = 200
+    CRITICAL2 = 100
+    CRITICAL3 = 50
     def __init__(self, inventory):
         self._inventory = inventory
 
@@ -26,8 +28,8 @@ class LevelChecker(object):
                     self.action_critical1(t)
 
     def check_level_by_type(self, blood_type: str):
-        fb = BloodToSendFilter(blood_type)
-        bloods = fb.filter(self._inventory.bloods)
+        bloods = filter_blood_to_send(self._inventory.bloods, int(time.time()))
+        bloods = filter_blood_by_type(bloods, blood_type)
         n_bags = len(bloods)
         if (n_bags < self.CRITICAL3):
             return "critical3"

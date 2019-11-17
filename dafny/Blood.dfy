@@ -13,7 +13,7 @@ state:
 
 class Blood {
     var add_time: int;
-    var use_by: int;
+    var use_by: int; // UTC seconds since 1970-01-01 00:00:00 GTM
     var state: int;
     var test_state: int;
     var blood_type: string;
@@ -22,6 +22,7 @@ class Blood {
 
     }
 
+    // should be moved to some upper level methods
     method is_expired(curr_time: int) returns (expired: bool)
     // requires curr_time is correct, but we cannot prove this
     ensures expired <==> use_by >= curr_time;

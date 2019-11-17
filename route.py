@@ -19,8 +19,8 @@ def add_blood():
     if request.method == 'GET':
         return render_template('add_blood.html')
     else:
-        api.add_blood(request.form)
-        return render_template('add_blood.html', success=True)
+        res = api.add_blood(request.form)
+        return render_template('add_blood.html', success=res['success'], id=res['id'])
 
 @page.route('/request_blood', methods=['GET', 'POST'])
 def request_blood():

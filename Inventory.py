@@ -50,7 +50,8 @@ class Inventory(object):
         
 
     def request_blood(self, n_bags: int, blood_type: str, org: Organization) -> list:
-        bloods = self.filter_blood(BloodToSendFilter(blood_type))
+        bloods = filter_blood_to_send(self._bloods, int(time.time()))
+        bloods = filter_blood_by_type(bloods, blood_type)
         if n_bags > len(bloods) or n_bags <= 0:
             return None
         bloods_to_send = bloods[0:n_bags]
@@ -60,21 +61,13 @@ class Inventory(object):
         self._requests.append(Request(size, org, bloods_to_send))
         return bloods_to_send
 
-
-    def filter_blood(self, filter: BloodFilter) -> list:
-        bloods = []
-        for blood in self._bloods:
-            if filter.check(blood):
-                bloods.append(blood)
-        return bloods
-
     def mark_bloods(self, bloods: list, state: BloodState):
         for blood in bloods:
             blood.state = state
 
     def get_blood_public_info(self) -> dict:
         raise DeprecationWarning('this is deprecated')
-        bloods = self.filter_blood(BloodToSendFilter())
+        bloods = filter_blood_to_send(self._bloods)
         blood_types = {}
         for blood in bloods:
             type = blood.type
@@ -115,30 +108,24 @@ class Inventory(object):
 
     # see blood_inventory.html to check what are inside opt
     def get_bloods_by_conditions(self, opt: dict) -> list:
-        bf = BloodFilter()
+        bloods = list(self._bloods)
+        print(f"id1: {id(bloods)}, id2: {id(self._bloods)}")
+        # bf = BloodFilter()
         res = opt.get('id', None)
-        # python's variable capture in lambda doesn't seem to work as expected
         if res is not None:
-            s1 = res
-            bf.add_condition(lambda blood: blood.id == int(s1))
+            bloods = filter_blood_by_id(bloods, int(res))
         res = opt.get('type')
         if res is not None:
-            s2 = res
-            bf.add_condition(lambda blood: blood.type == str(s2))
+            bloods = filter_blood_by_type(bloods, res)
         res = opt.get('isexpired', None)
         if res is not None:
-            bf.add_condition(lambda blood: blood.is_expired())
+            bloods = filter_expired_blood(bloods, int(time.time()))
         res = opt.get('state', None)
         if res is not None:
-            #print(f'res is : {res}')
-            s3 = int(res)
-            bf.add_condition(lambda blood: blood.state.value == int(s3))
+            bloods = filter_blood_by_state(bloods, int(res))
         res = opt.get('test_state', None)
         if res is not None:
-            s4 = int(res)
-            bf.add_condition(lambda blood: blood.test_state.value == int(s4))
-        
-        bloods: list = bf.filter(self._bloods)
+            bloods = filter_blood_by_test_state(bloods, int(res))
 
         ascdesc = opt.get('ascdesc', None)
         if ascdesc is None or ascdesc == 'asc':

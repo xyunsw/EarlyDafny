@@ -129,8 +129,7 @@ class BackendApi():
     def get_blood_level_by(self, data: dict) -> dict:
         filter = data.get('filter', None)
         if filter == 'BloodToSend':
-            ft = BloodToSendFilter()
-            bloods = ft.filter(self._inventory.bloods)
+            bloods = filter_blood_to_send(self._inventory.bloods, int(time.time()))
             res = self._inventory.get_blood_level_by(data['cat'], bloods)
         else:
             res = res = self._inventory.get_blood_level_by(data['cat'])
