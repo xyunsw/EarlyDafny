@@ -17,4 +17,5 @@ priv/
 *.dll
 *.mdb
 node_modules/
+*.bvd
 
