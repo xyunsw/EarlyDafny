@@ -41,10 +41,16 @@ class Inventory(object):
             print("checking...")
             sleep(6.00000)
 
-    def add_blood(self, donor_name: str, donor_id: str) -> int:
+    def add_blood(self, donor_name: str, donor_id: str, source: str) -> int:
         donor = Donor(donor_name, donor_id)
         blood = Blood(len(self._bloods), donor)
-        print("add blood...")
+        # print("add blood...")
+        if source == 'Bat-Mobile':
+            blood.test_state = BloodTestState.NOT_TESTED
+        elif source == 'Red Cross':
+            blood.test_state = BloodTestState.GOOD
+        else:
+            raise ValueError(f"invalid source: {source}")
         self._bloods.append(blood)
         return len(self._bloods) - 1
         

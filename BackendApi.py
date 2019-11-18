@@ -16,7 +16,7 @@ class BackendApi():
         self._inventory.start_checking()
     
     def add_blood(self, data: dict):
-        res = self._inventory.add_blood(data['donor_name'], data['donor_id'])
+        res = self._inventory.add_blood(data['donor_name'], data['donor_id'], data['source'])
         dbgprint(f"add blood: {data}")
         return {
             "success": True,
@@ -27,7 +27,7 @@ class BackendApi():
         print(f"request_blood: we are using inventory {self}")
         try:
             n_bags = int(data['n_bags'])
-            if n_bags < 0:
+            if n_bags <= 0:
                 raise ValueError()
         except:
             return {"success": False, "msg": "Invalid amount"}
