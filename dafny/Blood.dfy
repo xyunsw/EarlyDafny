@@ -18,8 +18,14 @@ class Blood {
     var test_state: int;
     var blood_type: string;
 
-    constructor() {
-
+    constructor(add_time:int , use_by:int,state : int , test_state:int , blood_type:string) 
+    modifies this;
+    {
+        this.add_time := add_time;
+        this.use_by := use_by;
+        this.state := state;
+        this.test_state := test_state;
+        this.blood_type := blood_type;
     }
 
     // should be moved to some upper level methods
@@ -34,10 +40,14 @@ class Blood {
             expired := true;
         }
     }
+
+    method blood_test(test_state:int) 
+    modifies this;
+    {
+        this.test_state := test_state;
+    }
 }
 
-method blood_test() {
-    var blood: Blood := new Blood();
-}
+
 
 
