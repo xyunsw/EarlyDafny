@@ -77,14 +77,17 @@ ensures forall i :: 0 <= i < |res| ==> (res[i] in bloods);
     }
 }
 
-/*
+
 method filter_blood_by_type(bloods: seq<Blood>, blood_type: string) returns (res: seq<Blood>)
+requires forall i:int :: 0 <= i < |bloods| ==> bloods[i] != null;
+ensures forall i: int :: 0 <= i < |res| ==> res[i] != null;
 ensures forall i: int :: 0 <= i < |res| ==> res[i].blood_type == blood_type;
 {
     res := [];
     var idx: int := 0;
     while idx < |bloods|
     decreases |bloods| - idx;
+    invariant forall i: int :: 0 <= i < |res| ==> res[i] != null;
     invariant forall i: int :: 0 <= i < |res| ==> res[i].blood_type == blood_type;
     {
         if bloods[idx].blood_type == blood_type {
@@ -93,7 +96,7 @@ ensures forall i: int :: 0 <= i < |res| ==> res[i].blood_type == blood_type;
         idx := idx + 1;
     }
 }
-*/
+
 
 method filter_blood_to_send(bloods: seq<Blood>, curr_time: int) returns (res3: seq<Blood>)
 requires forall i: int :: 0 <= i < |bloods| ==> bloods[i] != null;
@@ -111,5 +114,3 @@ ensures forall i: int :: 0 <= i < |res3| ==> res3[i].test_state == 2;
     // assert forall i: int :: 0 <= i < |res| ==> res[i].use_by > curr_time;
     res3 := filter_blood_by_test_state(res2, 2);    // 2 for good blood, see Blood.dfy
 }
-
-
