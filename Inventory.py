@@ -140,7 +140,6 @@ class Inventory(object):
                 bloods.sort(key=lambda blood: blood.use_by, reverse=reverse)
             else:
                 bloods.sort(key=lambda blood: blood.add_time, reverse=reverse)
-        
         return bloods
         
 
