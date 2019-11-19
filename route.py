@@ -29,15 +29,18 @@ def request_blood():
         print(blood_types)
         return render_template('request_blood.html', blood_types=blood_types)
     else:
-        data = {"blood_type": request.form['blood_type'], "n_bags": request.form['n_bags']}
-        org = {"name": request.form['org_name'], "address": request.form['org_address'], "phone": request.form['org_phone']}
-        data['org'] = org
-        res = api.request_blood(data)
-        if not res['success']:
-            return render_template('error.html', err_msg=res['msg'])
-        else:
-            blood_types = api.get_blood_level_by({'cat': 'type', 'filter': 'BloodToSend'})
-            return render_template('request_blood.html', blood_types=blood_types, success=True)
+        try:
+            data = {"blood_type": request.form['blood_type'], "n_bags": request.form['n_bags']}
+            org = {"name": request.form['org_name'], "address": request.form['org_address'], "phone": request.form['org_phone']}
+            data['org'] = org
+            res = api.request_blood(data)
+            if not res['success']:
+                return render_template('error.html', err_msg=res['msg'])
+            else:
+                blood_types = api.get_blood_level_by({'cat': 'type', 'filter': 'BloodToSend'})
+                return render_template('request_blood.html', blood_types=blood_types, success=True)
+        except:
+            return render_template('error.html', err_msg='invalid request')
 
 @page.route('/blood/<bid>', methods=['GET', 'POST'])
 def blood(bid: str):
