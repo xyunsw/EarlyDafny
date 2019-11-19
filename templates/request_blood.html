@@ -17,7 +17,7 @@
             <select style="margin-left: 25px" name="blood_type">
                 {% for type in blood_types %}
                     {% if blood_types[type] > 0 %}
-                    <option value="{{ type }}">{{type}} {{blood_types[type]}}</option>
+                    <option value="{{ type }}">{{type}}</option>
                     {% endif %}
                 {% endfor %}
             </select>
