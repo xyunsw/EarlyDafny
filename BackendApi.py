@@ -16,7 +16,11 @@ class BackendApi():
         self._inventory.start_checking()
     
     def add_blood(self, data: dict):
-        res = self._inventory.add_blood(data['donor_name'], data['donor_id'], data['source'])
+        if data['source'] == "Red Cross":
+            ext = {"use_by": data['use_by'], "blood_type": data['blood_type']}
+        else:
+            ext = {}
+        res = self._inventory.add_blood(data['donor_name'], data['donor_id'], data['source'], **ext)
         dbgprint(f"add blood: {data}")
         return {
             "success": True,

@@ -69,7 +69,7 @@ class Blood(ABC):
 
     @use_by.setter
     def use_by(self, new_use_by):
-        self._use_by_time = new_use_by
+        self._use_by_time = int(new_use_by)
 
     @state.setter
     def state(self, state):

@@ -18,8 +18,11 @@ function immutubleElemTimeTransfer(elem, field) {
 
 function mutubleElemTimeTransfer(elem, field) {
     let visible = elem.cloneNode(false);
-    //elem.style.display = "none";
+    elem.style.display = "none";
     //elem.disabled = true;
+    if (elem[field] === "") {
+        elem[field] = '0';
+    }
     let v_id = elem.id
     if (v_id !== "") {
         visible.id = "";

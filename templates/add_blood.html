@@ -5,15 +5,23 @@
 <div>
     <form method="POST">
         <div style="display: flex; margin-bottom: 25px">
-            <label style="width: 200px">Donor name: </label>
+            <label style="width: 250px">Donor name: </label>
             <input style="margin-left: 25px" type="text" name="donor_name" />
         </div>
         <div style="display: flex; margin-bottom: 25px">
-            <label style="width: 200px">Donor ID: </label>
+            <label style="width: 250px">Donor ID: </label>
             <input style="margin-left: 25px" type="text" name="donor_id" />
         </div>
+        <div class="rc" style="display: none; margin-bottom: 25px">
+            <label style="width: 250px">Blood type: </label>
+            <input style="margin-left: 25px" type="text" name="blood_type" />
+        </div>
+        <div class="rc" style="display: none; margin-bottom: 25px">
+            <label style="width: 250px">Use by: </label>
+            <input style="margin-left: 25px" type="text" name="use_by" />
+        </div>
         <div style="display: flex; margin-bottom: 25px">
-            <label style="width: 200px">Source: </label>
+            <label style="width: 250px">Source: </label>
             <select name="source">
                 <option selected value="Bat-Mobile">Bat-Mobile</option>
                 <option value="Red Cross">Red Cross</option>
@@ -27,6 +35,27 @@
         </div>
     </form>
 </div>
+
+
+<script type="text/javascript">
+let use_by = document.getElementsByName('use_by')[0];
+mutubleElemTimeTransfer(use_by, "value")
+let sel = document.getElementsByName('source')[0];
+sel.addEventListener("change", enevt => {
+    let val = sel.selectedOptions[0].value;
+    
+    let div = document.getElementsByClassName('rc');
+    for (let d of div) {
+        if (val === "Red Cross") {
+            d.style.display = "flex";
+        }
+        else {
+            d.style.display = "none";
+        }
+    }
+})
+</script>
+
 
 {% endblock %}
 
