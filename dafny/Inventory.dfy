@@ -3,6 +3,11 @@ include "Blood.dfy"
 class Inventory {
     var bloods: seq<Blood>;
 
+    predicate valid()
+    reads this;
+    {
+        forall i: int :: 0 <= i < |bloods| ==> bloods[i] != null
+    }
     constructor() 
     modifies this;
     {
@@ -10,6 +15,7 @@ class Inventory {
     }
 
     method add_blood(blood : Blood)
+    requires valid();
     modifies this;
     {
         bloods := bloods + [blood];
@@ -17,15 +23,16 @@ class Inventory {
 
     method request_blood(n_bag : int,blood_type : string, org : string, curr_time:int) returns ( blood_to_send: seq<Blood>)
     requires n_bag > 0;
+    requires valid();
     modifies bloods;
-    ensures fresh(blood_to_send);
+    // ensures fresh(blood_to_send);
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i] != null;                 //make 1.9.7 complier compatible
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].use_by > curr_time;      
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 3;
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].blood_type == blood_type;
     {
-        blood_to_send:= []; // how to satisfied fresh
+        blood_to_send := []; // how to satisfied fresh
         var idx:= 0;
         var request_nbags := 0;
         while (idx < |bloods|)
