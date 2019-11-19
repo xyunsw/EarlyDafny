@@ -9,6 +9,14 @@
             <input style="margin-left: 25px" type="text" name="use_by" value="{{ info['use_by'] }}" />
         </div>
         <div style="display: flex; margin-bottom: 25px">
+            <label style="width: 200px">Feedback:</label>
+            <input style="margin-left: 25px" type="text" name="feedback" value="{{ info['feedback'] }}" />
+        </div>
+        <div style="display: flex; margin-bottom: 25px">
+            <label style="width: 200px">Type:</label>
+            <input style="margin-left: 25px" type="text" name="type" value="{{ info['type'] }}" />
+        </div>
+        <div style="display: flex; margin-bottom: 25px">
             <label style="width: 200px">State: </label>
             <select name="state">
                 <option value='1'>In inventory</option>
@@ -17,21 +25,13 @@
                 <option value='4'>Disposed</option>
             </select>
         </div>
-        <div>
+        <div style="display: flex; margin-bottom: 25px">
             <label style="width: 200px">Test State: </label>
             <select name="test_state">
                 <option value='1'>Not tested</option>
                 <option value='2'>Good</option>
                 <option value='3'>Bad</option>
             </select>
-        </div>
-        <div style="display: flex; margin-bottom: 25px">
-            <label style="width: 200px">Feedback:</label>
-            <input style="margin-left: 25px" type="text" name="feedback" value="{{ info['feedback'] }}" />
-        </div>
-        <div style="display: flex; margin-bottom: 25px">
-            <label style="width: 200px">Type:</label>
-            <input style="margin-left: 25px" type="text" name="type" value="{{ info['type'] }}" />
         </div>
         <div style="display: flex; margin-bottom: 25px">
             <input type="submit" />
