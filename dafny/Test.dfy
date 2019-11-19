@@ -8,5 +8,5 @@ method Main()
     blood1.blood_test(2);
     var inventory: Inventory := new Inventory();
     inventory.add_blood(blood1);
-    var request_blood : seq<Blood> := inventory.request_blood(1,"A","123",0);
+    // var request_blood : seq<Blood> := inventory.request_blood(1,"A","123",0);
 }
