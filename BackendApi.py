@@ -20,8 +20,10 @@ class BackendApi():
             ext = {"use_by": data['use_by'], "blood_type": data['blood_type']}
         else:
             ext = {}
+        if data['donor_name'] == "" or data['donor_id'] == "":
+            return {"success": False, "msg": "Please enter donor's info"}
         res = self._inventory.add_blood(data['donor_name'], data['donor_id'], data['source'], **ext)
-        dbgprint(f"add blood: {data}")
+        # dbgprint(f"add blood: {data}")
         return {
             "success": True,
             "id": res

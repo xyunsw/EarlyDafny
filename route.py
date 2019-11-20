@@ -20,6 +20,8 @@ def add_blood():
         return render_template('add_blood.html')
     else:
         res = api.add_blood(request.form)
+        if not res['success']:
+            return render_template('error.html', err_msg=res['msg'])
         return render_template('add_blood.html', success=res['success'], id=res['id'])
 
 @page.route('/request_blood', methods=['GET', 'POST'])

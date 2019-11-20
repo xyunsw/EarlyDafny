@@ -75,13 +75,13 @@ class Blood(ABC):
     def state(self, state):
         if isinstance(state, int):
             self._state = BloodState(state)
-            print(f'setting state {state}/{self._state}')
+            # print(f'setting state {state}/{self._state}')
         elif isinstance(state, BloodState):
             self._state = state
         else:
             raise TypeError(f"unexpected type of state: {type(state)}")
 
-    def is_expired(self):
+    def is_expired0(self):
         return int(time.time()) >= self._use_by_time
 
     def is_good_blood(self):

@@ -16,7 +16,7 @@ class Inventory(object):
         self._bloods = []
         self._requests = []
         self._lc = LevelChecker(self)
-        self._th = Thread(target=self.check_blood_per_min)
+        self._th = Thread(target=self.do_check_blood)
         self._th.setDaemon(True)
 
     @property
@@ -26,17 +26,9 @@ class Inventory(object):
     def start_checking(self):
         self._th.start()
 
-    def check_blood_per_min(self):
+    def do_check_blood(self):
         os.environ['CHECKING_THREAD'] = str(get_ident())
         while True:
-            # print(os.environ)
-            # w = os.environ.get("WERKZEUG_RUN_MAIN")
-            # print(f"WERKZEUG_RUN_MAIN: {w}")
-            # prev_id = os.environ.get("CHECKING_THREAD", None)
-            # print(f"pid: {os.getpid()}, tid: {get_ident()}, prev_tid: {prev_id}")
-            # if prev_id is not None:
-            #     if int(prev_id) != get_ident():
-            #         return
             self._lc.check_level()
             print("checking...")
             sleep(6.00000)
@@ -44,7 +36,6 @@ class Inventory(object):
     def add_blood(self, donor_name: str, donor_id: str, source: str, blood_type="", use_by=-1) -> int:
         donor = Donor(donor_name, donor_id)
         blood = Blood(len(self._bloods), donor)
-        # print("add blood...")
         if source == 'Bat-Mobile':
             blood.test_state = BloodTestState.NOT_TESTED
         elif source == 'Red Cross':
@@ -145,9 +136,16 @@ class Inventory(object):
         order_by = opt.get('order_by', None)
         if order_by is not None:
             if order_by == 'use_by':
-                bloods.sort(key=lambda blood: blood.use_by, reverse=reverse)
+                # bloods.sort(key=lambda blood: blood.use_by, reverse=reverse)
+                if not reverse:
+                    sort_blood_by_useby_asc(bloods)
+                else:
+                    sort_blood_by_useby_desc(bloods)
             else:
-                bloods.sort(key=lambda blood: blood.add_time, reverse=reverse)
+                if not reverse:
+                    sort_blood_by_addtime_asc(bloods)
+                else:
+                    sort_blood_by_addtime_desc(bloods)
         return bloods
         
 

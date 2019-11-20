@@ -25,14 +25,13 @@ class Inventory {
     requires n_bag > 0;
     requires valid();
     modifies bloods;
-    // ensures fresh(blood_to_send);
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i] != null;                 //make 1.9.7 complier compatible
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].use_by > curr_time;      
-    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 3;
-    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;
+    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 3;   // used
+    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;   // good blood
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].blood_type == blood_type;
     {
-        blood_to_send := []; // how to satisfied fresh
+        blood_to_send := []; 
         var idx:= 0;
         var request_nbags := 0;
         while (idx < |bloods|)
@@ -60,6 +59,8 @@ class Inventory {
     method mark_bloods(pend_bloods: seq<Blood>, state: int)
     requires forall i: int :: 0 <= i < |pend_bloods| ==> pend_bloods[i] != null
     requires state == 1 || state == 2 || state == 3 || state == 4
+    requires valid();
+    ensures valid();
     modifies pend_bloods;
     {
         var idx := 0;
@@ -79,6 +80,7 @@ class Inventory {
     requires 0 <= id < |bloods|;
     requires valid();
     ensures exists i: int | 0 <= i < |bloods| :: blood == bloods[i];
+    ensures valid();
     {
         blood := bloods[id];
     }

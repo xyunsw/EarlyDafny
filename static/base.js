@@ -40,8 +40,8 @@ function mutubleElemTimeTransfer(elem, field) {
         }
         else {
             //event.preventDefault();
-            visible[field] = utcToDateString(parseInt(elem[field]));
         }
+        visible[field] = utcToDateString(parseInt(elem[field]));
     });
 }
 
