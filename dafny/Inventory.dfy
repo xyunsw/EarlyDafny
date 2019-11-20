@@ -56,5 +56,24 @@ class Inventory {
             }
         }
     }
+    
+    method mark_bloods(pend_bloods: seq<Blood>, state: int)
+    requires forall i: int :: 0 <= i < |pend_bloods| ==> pend_bloods[i] != null
+    requires state == 1 || state == 2 || state == 3 || state == 4
+    modifies pend_bloods;
+    {
+        var idx := 0;
+        while(idx < |pend_bloods|)
+        decreases |pend_bloods| - idx;
+        invariant idx <= |pend_bloods|;
+        invariant forall i :: 0 <= i < idx ==> pend_bloods[i] .state == state;
+        {
+            pend_bloods[idx].state := state;
+            idx := idx + 1;
+        }
+        assert forall i: int :: 0 <= i < |pend_bloods| ==> pend_bloods[i].state == state;
+    }
+        
 }
+
 
