@@ -7,13 +7,14 @@
     <script type="text/javascript">
     let summary_filter = "BloodToSend";
     </script>
+    <div style="margin-bottom: 10px;">Blood available for requesting</div>
     {% include "blood_inventory_summary.html" %}
 </div>
 
 <div>
     <form method="POST">
         <div style="display: flex; margin-bottom: 25px">
-            <label>Type: </label>
+            <label style="width: 220px;">Type: </label>
             <select style="margin-left: 25px" name="blood_type">
                 {% for type in blood_types %}
                     {% if blood_types[type] > 0 %}
@@ -23,19 +24,19 @@
             </select>
         </div>
         <div style="display: flex; margin-bottom: 25px">
-            <label>Amount: </label>
+            <label style="width: 220px;">Amount: </label>
             <input style="margin-left: 25px" type="text" name="n_bags" />
         </div>
         <div style="display: flex; margin-bottom: 25px">
-            <label>Organization name: </label>
+            <label style="width: 220px;">Organization name: </label>
             <input style="margin-left: 25px" type="text" name="org_name" />
         </div>
         <div style="display: flex; margin-bottom: 25px">
-            <label>Organization address: </label>
+            <label style="width: 220px;">Organization address: </label>
             <input style="margin-left: 25px" type="text" name="org_address" />
         </div>
         <div style="display: flex; margin-bottom: 25px">
-            <label>Organization phone: </label>
+            <label style="width: 220px;">Organization phone: </label>
             <input style="margin-left: 25px" type="text" name="org_phone" />
         </div>
         <div style="display: flex; margin-bottom: 25px">

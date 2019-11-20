@@ -35,6 +35,8 @@ class BackendApi():
                 raise ValueError()
         except:
             return {"success": False, "msg": "Invalid amount"}
+        if data['org']['name'] == "" or data['org']['address'] == "" or data['org']['phone'] == "":
+            return {"success": False, "msg": "Please complete organization information"}
         org = Organization(data['org']['name'], data['org']['address'], data['org']['phone'])
         res = self._inventory.request_blood(n_bags, data['blood_type'], org)
         dbgprint(f"request blood: {data}")
@@ -74,7 +76,6 @@ class BackendApi():
 
     def update_blood(self, data: dict):
         id = int(data['id'])
-        # fixme
         new_blood: Blood = self._inventory.get_blood_by_id(id)
         new_blood.use_by = int(data['use_by'])
         new_blood.state = int(data['state'])
@@ -107,13 +108,6 @@ class BackendApi():
         except:
             return {"success": False, "msg": f"request of id {id} not found"}
         info = {"success": True}
-        # bloods = []
-        # for blood in req.bloods:
-        #     bloods.append(self.blood_to_dict(blood))
-        # info['bloods'] = bloods
-        # info['id'] = id
-        # org = {"name": req.org.name, "address": req.org.address, "phone": req.org.phone}
-        # info['org'] = org
         info.update(self.request_to_dict(req))
         return info
 
