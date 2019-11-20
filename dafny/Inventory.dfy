@@ -74,14 +74,6 @@ class Inventory {
         assert forall i: int :: 0 <= i < |pend_bloods| ==> pend_bloods[i].state == state;
     }
     
-    method get_blood_by_id(id: int) returns(blood: Blood)
-    modifies bloods;
-    requires 0 <= id < |bloods|;
-    requires valid();
-    ensures exists i: int | 0 <= i < |bloods| :: blood == bloods[i];
-    {
-        blood := bloods[id];
-    }
 }
 
 
