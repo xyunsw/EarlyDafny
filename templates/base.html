@@ -49,6 +49,7 @@
     .header{
         padding:0 30px;
         background:#DDDDDD;
+        height:70px;
     }
     .submit_buttom{
         width:100px;
@@ -64,10 +65,19 @@
         margin:0 auto;
         text-align:center;
     }
+    .event{
+        width:250px;
+        display: inline-block;
+        line-height: 70px;
+    }
 </style>
     <body>
         <header class="header">
             <div><a href="/"><image src="/static/vampire_logo.jpg" style="width:70px"></a></div>
+            <div class="event"id="tag_1">Add blood</div>
+            <div class="event" id="tag_2">Request Blood (For organizations)</div>
+            <div class="event" id="tag_3">Blood Inventory</div>
+            <div class="event"id="tag_4">Request history</div>
             <ul class="header-items">
                 <li class="header-item">item1</li>
                 <li class="header-item">item2</li>
@@ -78,6 +88,20 @@
 
         {% endblock %}
     </body>
+    <script type="text/javascript">
+    $("#tag_1").click(function(){
+        window.location.href="/add_blood";
+    });
+    $("#tag_2").click(function(){
+        window.location.href="/request_blood";
+    });
+    $("#tag_3").click(function(){
+        window.location.href="/blood_inventory";
+    });
+    $("#tag_4").click(function(){
+        window.location.href="/requests";
+    });
+    </script>
 </html>
 
 

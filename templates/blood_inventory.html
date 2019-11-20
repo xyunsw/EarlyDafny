@@ -83,6 +83,9 @@
 
 
 <script type="text/javascript">
+$().ready(function(){
+    $("#tag_3").css("background","white");
+});
 async function getBloodList(opt) {
     let opt_json = JSON.stringify(opt);
     let res = await fetch('/api/get_bloods_by_conditions', {
