@@ -46,6 +46,9 @@ class BloodFilter():
 
 # I wrote these functions so that they are easy to verify using dafny
 
+def sort_blood_by_useby_asc(bloods: list):
+    pass
+
 def filter_blood_by_type(bloods: list, blood_type: str) -> list:
     res = []
     blood: Blood
