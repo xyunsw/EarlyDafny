@@ -62,6 +62,18 @@ class Blood {
     {
         this.test_state := test_state;
     }
+    
+    method is_good_blood() returns (result: bool)
+    requires valid();
+    ensures valid();
+    ensures result == (test_state == 2)
+    {
+        if(test_state == 2){
+            result := true;
+        } else{
+            result := false;
+        }
+    }
 }
 
 
