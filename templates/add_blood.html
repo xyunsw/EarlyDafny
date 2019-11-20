@@ -2,7 +2,23 @@
 {% block content %}
 
 <h2>Add blood</h2>
-<div>
+<style>
+    .submit_buttom{
+        width:100px;
+        height:50px;
+        background: lightgray;
+        border-radius: 50px;
+        margin-left:250px;
+        font-weight:bold;
+        font-size:17px;
+    }
+    .form_container{
+        width:600px;
+        margin:0 auto;
+        text-align:center;
+    }
+</style>
+<div class="form_container">
     <form method="POST">
         <div style="display: flex; margin-bottom: 25px">
             <label style="width: 250px">Donor name: </label>
@@ -28,7 +44,7 @@
             </select>
         </div>
         <div style="display: flex; margin-bottom: 25px">
-            <input type="submit" />
+            <input type="submit" class="submit_buttom" value="Submit"/>
             {% if success %}
             <div style="color: green; margin-left: 20px;">submitted, blood id: <a href="/blood/{{ id }}">{{ id }}</a></div>
             {% endif %}
