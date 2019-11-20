@@ -4,8 +4,26 @@
         <title>Vampire Management System</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <script src="{{ url_for('static', filename='base.js') }}"></script>
+        <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.css') }}">
+	<script type="text/javascript" src="{{ url_for('static',filename='jquery-3.3.1.min.js') }}">
+	</script>
     </head>
-
+<style>
+    body{
+        text-align:center;
+    }
+    input, select, textarea {
+	    color: inherit;
+	    font: inherit;
+	    outline: none;
+	    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	    border: 0;
+	    appearance: none;
+	    -webkit-appearance: none;
+	}
+</style>
     <body>
         <header class="header">
             <div><a href="/">Vampire logo😂</a></div>
