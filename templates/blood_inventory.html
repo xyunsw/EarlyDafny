@@ -4,12 +4,14 @@
 <h2>Blood Inventory</h2>
 
 <!--summary here-->
-
-{% include "blood_inventory_summary.html" %}
-
+<div class="form_container">
+        <div style="padding-left:240px">
+        {% include "blood_inventory_summary.html" %}
+        </div>
 <!--condition here-->
-<div>
+<div >
     <h4>Filter by</h4>
+    <div style="padding-left:140px">
     <div style="display: flex; margin-bottom: 10px;">
         <label style="width: 150px">ID</label>
         <input type="text" id="id">
@@ -25,7 +27,7 @@
     <div style="display: flex; margin-bottom: 10px;">
         <label style="width: 150px">State: </label>
         <select id="state">
-            <option value='0'></option>
+            <option value='0'>None</option>
             <option value='1'>In inventory</option>
             <option value='2'>Testing</option>
             <option value='3'>Used</option>
@@ -35,29 +37,30 @@
     <div style="display: flex; margin-bottom: 10px;">
         <label style="width: 150px">Test State: </label>
         <select id="test_state">
-            <option value='0'></option>
+            <option value='0'>None</option>
             <option value='1'>Not tested</option>
             <option value='2'>Good</option>
             <option value='3'>Bad</option>
         </select>
+    </div>
     </div>
 </div>
 
 <div style="margin-bottom: 35px;">
     <h4>Order by</h4>
     <select id="order_by">
-        <option value='0'></option>
+        <option value='0'>None</option>
         <option value="use_by">Use By</option>
         <option value="add_time">Add time</option>
     </select>
     <select id="ascdesc">
-        <option value='0'></option>
+        <option value='0'>None</option>
         <option value="asc">Ascending</option>
         <option value="desc">Descending</option>
     </select>
 </div>
 
-
+</div>
 <!--blood list here-->
 <table>
     <thead>
