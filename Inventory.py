@@ -26,7 +26,7 @@ class Inventory(object):
     def start_checking(self):
         self._th.start()
 
-    def check_blood_per_min(this):
+    def check_blood_per_min(self):
         os.environ['CHECKING_THREAD'] = str(get_ident())
         while True:
             # print(os.environ)
@@ -37,7 +37,7 @@ class Inventory(object):
             # if prev_id is not None:
             #     if int(prev_id) != get_ident():
             #         return
-            this._lc.check_level()
+            self._lc.check_level()
             print("checking...")
             sleep(6.00000)
 

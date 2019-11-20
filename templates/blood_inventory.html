@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<div>
+<div style="margin-bottom: 35px;">
     <h4>Order by</h4>
     <select id="order_by">
         <option value='0'></option>
@@ -62,11 +62,14 @@
 <table>
     <thead>
         <td>Id</td>
+        <td>Add time</td>
         <td>Use By</td>
         <td>State</td>
         <td>Test state</td>
         <td>Feedback</td>
         <td>Type</td>
+        <td>Donor name</td>
+        <td>Donor ID</td>
     </thead>
     <tbody id="blood_table">
 
@@ -91,7 +94,7 @@ async function getBloodList(opt) {
 async function renderBloodList(blood_list) {
     let blood_table = document.getElementById("blood_table");
     blood_table.innerHTML = "";
-    let attr_list = ['id', 'use_by', 'state', 'test_state', 'feedback', 'type'];
+    let attr_list = ['id', 'add_time', 'use_by', 'state', 'test_state', 'feedback', 'type', 'donor_name', 'donor_id'];
     for (let blood of blood_list) {
         let tr = document.createElement('tr');
         blood_table.appendChild(tr);
@@ -106,7 +109,7 @@ async function renderBloodList(blood_list) {
             }
             else {
                 td.textContent = blood[attr];
-                if (attr === "use_by") {
+                if (attr === "use_by" || attr === "add_time") {
                     immutubleElemTimeTransfer(td, "textContent");
                 }
                 else if(attr === "state") {

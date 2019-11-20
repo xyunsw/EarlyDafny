@@ -48,6 +48,9 @@ class BackendApi():
 
     def blood_to_dict(self, blood: Blood) -> dict:
         info = {}
+        info['donor_name'] = blood.donor.name
+        info['donor_id'] = blood.donor.id
+        info['add_time'] = blood.add_time
         info['use_by'] = blood.use_by
         info['state'] = blood.state.value
         info['test_state'] = blood.test_state.value
@@ -136,5 +139,5 @@ class BackendApi():
             bloods = filter_blood_to_send(self._inventory.bloods, int(time.time()))
             res = self._inventory.get_blood_level_by(data['cat'], bloods)
         else:
-            res = res = self._inventory.get_blood_level_by(data['cat'])
+            res = self._inventory.get_blood_level_by(data['cat'])
         return res
