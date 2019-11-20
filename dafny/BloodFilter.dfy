@@ -82,6 +82,7 @@ method filter_blood_by_type(bloods: seq<Blood>, blood_type: string) returns (res
 requires forall i:int :: 0 <= i < |bloods| ==> bloods[i] != null;
 ensures forall i: int :: 0 <= i < |res| ==> res[i] != null;
 ensures forall i: int :: 0 <= i < |res| ==> res[i].blood_type == blood_type;
+ensures forall i :: 0 <= i < |res| ==> (res[i] in bloods);
 {
     res := [];
     var idx: int := 0;
@@ -89,6 +90,8 @@ ensures forall i: int :: 0 <= i < |res| ==> res[i].blood_type == blood_type;
     decreases |bloods| - idx;
     invariant forall i: int :: 0 <= i < |res| ==> res[i] != null;
     invariant forall i: int :: 0 <= i < |res| ==> res[i].blood_type == blood_type;
+    invariant 0 <= idx <= |bloods|;
+    invariant forall i :: 0 <= i < |res| ==> (exists j :: 0 <= j < idx && res[i] == bloods[j]);
     {
         if bloods[idx].blood_type == blood_type {
             res := res + [bloods[idx]];
@@ -104,6 +107,7 @@ ensures forall i: int :: 0 <= i < |res3| ==> res3[i] != null;
 ensures forall i: int :: 0 <= i < |res3| ==> res3[i].use_by > curr_time;
 ensures forall i: int :: 0 <= i < |res3| ==> res3[i].state == 1;
 ensures forall i: int :: 0 <= i < |res3| ==> res3[i].test_state == 2;
+ensures forall i :: 0 <= i < |res3| ==> (res3[i] in bloods);
 {
     var res := filter_not_expired_blood(bloods, curr_time);
     // assert forall i: int :: 0 <= i < |res| ==> res[i].use_by > curr_time;
