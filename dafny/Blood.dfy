@@ -25,8 +25,12 @@ class Blood {
         state >= 1 && state <= 4 && test_state >=1 && test_state <= 3
     }
 
-    constructor(){
-
+    constructor()
+    ensures Valid();
+    {
+        use_by := -1;
+        state := 1;
+        test_state := 1;
     }    
 
     method is_expired(curr_time: int) returns (expired: bool)
