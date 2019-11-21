@@ -42,15 +42,6 @@ class Blood {
             expired := true;
         }
     }
-
-    method blood_test(test_state:int) 
-    requires test_state>=1 && test_state<=3;
-    requires Valid();
-    ensures Valid();
-    modifies this;
-    {
-        this.test_state := test_state;
-    }
     
     method is_good_blood() returns (result: bool)
     requires Valid();
