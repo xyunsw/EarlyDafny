@@ -22,8 +22,7 @@ class Blood {
     predicate Valid()
     reads this
     {
-        add_time >= 0 && use_by >= 0 && state >= 1 && state <= 4
-    &&  test_state >=1 && test_state <= 3 && blood_type != ""
+        state >= 1 && state <= 4 && test_state >=1 && test_state <= 3
     }
 
     constructor(){
