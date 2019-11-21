@@ -46,10 +46,6 @@ class BackendApi():
             return {"success": False, "msg": "Insufficient blood"}
         return {"success": True, "blood": res}
 
-    def get_blood_public_info(self):
-        res = self._inventory.get_blood_level_by("type")
-        return {"success": True, "blood_types": res}
-
     def blood_to_dict(self, blood: Blood) -> dict:
         info = {}
         info['donor_name'] = blood.donor.name
@@ -103,7 +99,6 @@ class BackendApi():
         return info
 
     def get_request_by_id(self, data: dict) -> dict:
-        print(f"get_request_by_id: we are using inventory {self}")
         id = int(data['id'])
         try:
             req = self._inventory.get_request_by_id(id)

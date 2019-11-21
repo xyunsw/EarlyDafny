@@ -64,18 +64,6 @@ class Inventory(object):
         for blood in bloods:
             blood.state = state
 
-    def get_blood_public_info(self) -> dict:
-        raise DeprecationWarning('this is deprecated')
-        bloods = filter_blood_to_send(self._bloods)
-        blood_types = {}
-        for blood in bloods:
-            type = blood.type
-            if blood_types.get(type, None) is None:
-                blood_types[type] = 1
-            else:
-                blood_types[type] += 1
-        return blood_types
-
     def get_blood_level_by(self, cat: str, bloods: list=None) -> dict:
         if bloods is None:
             bloods = self._bloods
