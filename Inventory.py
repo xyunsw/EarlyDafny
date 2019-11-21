@@ -104,6 +104,8 @@ class Inventory(object):
             idx = search_blood_by_id(bloods, int(res))
             if idx != -1:
                 bloods = [bloods[idx]]
+            else:
+                bloods = []
         res = opt.get('type')
         if res is not None:
             bloods = filter_blood_by_type(bloods, res)

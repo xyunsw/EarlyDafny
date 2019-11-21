@@ -50,7 +50,7 @@ def search_blood_by_id(bloods: list, id: int) -> int:
     idx = 0
     blood: Blood
     while idx < len(bloods):
-        if bloods[id].id == id:
+        if bloods[idx].id == id:
             return idx
         idx += 1
     idx = -1
