@@ -26,6 +26,7 @@ class Blood {
     }
 
     constructor()
+    modifies this;
     ensures Valid();
     {
         use_by := -1;

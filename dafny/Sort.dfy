@@ -76,6 +76,44 @@ modifies bloods;
     assert toMultiset(bloods) == toMultiset(old(bloods));
 }
 
+predicate sort_blood_by_add_time_asc (bloods:array<Blood>)
+requires bloods != null;
+reads bloods;
+reads set m | 0 <= m < bloods.Length :: bloods[m];
+requires forall i :: 0 <= i < bloods.Length ==> bloods[i] != null;
+{
+    forall i :: 0 <= i < bloods.Length ==> bloods[i].add_time <= bloods[i].add_time
+}
+
+method sort_blood_by_add_time_asc_order(bloods : array<Blood>)
+requires bloods != null;
+modifies bloods;
+requires forall i :: 0 <= i < bloods.Length ==> bloods[i] != null;
+ensures forall i :: 0 <= i < bloods.Length ==> bloods[i] != null;
+ensures sort_blood_by_add_time_asc(bloods);
+{
+    var sorted_tail := 0;
+
+    while (sorted_tail < bloods.Length)
+    decreases bloods.Length - sorted_tail;
+    invariant 0 <= sorted_tail <= bloods.Length;
+    invariant forall i :: 0 <= i < bloods.Length ==> bloods[i] != null;
+    invariant forall i,j :: 0 <= i < j < sorted_tail ==> bloods[i].add_time <= bloods[j].add_time;
+    {
+        var to_swap := sorted_tail;
+        while (to_swap >= 1 && bloods[to_swap -1].add_time > bloods[to_swap].add_time)
+        decreases to_swap - 1;
+        invariant 0 <= sorted_tail <= bloods.Length;
+        invariant forall i :: 0 <= i < bloods.Length ==> bloods[i] != null;
+        invariant forall i, j :: (0 <= i < j <= sorted_tail && j != to_swap) ==> bloods[i].add_time <= bloods[j].add_time;
+        {
+            bloods[to_swap - 1], bloods[to_swap] := bloods[to_swap], bloods[to_swap - 1];
+            to_swap := to_swap - 1;
+        }
+        sorted_tail := sorted_tail + 1;
+    }
+}
+
 method Main() {
     // this shows dafny has reference semantics
     // var b := new Blood();

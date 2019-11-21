@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from werkzeug.contrib.fixers import ProxyFix
 import os
 from route import page, api
-t
+
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
