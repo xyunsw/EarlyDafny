@@ -38,6 +38,7 @@ class Inventory(object):
         blood = Blood(len(self._bloods), donor)
         if source == 'Bat-Mobile':
             blood.test_state = BloodTestState.NOT_TESTED
+            
         elif source == 'Red Cross':
             blood.test_state = BloodTestState.GOOD
             blood.use_by = use_by

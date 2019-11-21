@@ -56,7 +56,8 @@ def blood(bid: str):
         form = dict(request.form)
         form['id'] = bid
         api.update_blood(form)
-        return redirect(url_for('page.blood', bid=bid))
+        # return redirect(url_for('page.blood', bid=bid))
+        return render_template('blood_inventory.html')
 
 
 @page.route('/request/<id>', methods=['GET'])
