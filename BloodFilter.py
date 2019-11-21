@@ -46,13 +46,15 @@ def filter_blood_by_type(bloods: list, blood_type: str) -> list:
             res.append(blood)
     return res
 
-def filter_blood_by_id(bloods: list, blood_id: str) -> list:
-    res = []
+def search_blood_by_id(bloods: list, id: int) -> int:
+    idx = 0
     blood: Blood
-    for blood in bloods:
-        if blood.id == blood_id:
-            res.append(blood)
-    return res
+    while idx < len(bloods):
+        if bloods[idx].id == id:
+            return idx
+        idx += 1
+    idx = -1
+    return idx
 
 def filter_blood_by_state(bloods: list, blood_state: int) -> list:
     if type(blood_state) != int:
@@ -76,34 +78,38 @@ def filter_blood_by_test_state(bloods: list, blood_test_state: int) -> list:
 
 def filter_not_expired_blood(bloods: list, curr_time: int) -> list:
     res = []
-    blood: Blood
-    for blood in bloods:
-        if blood.use_by > curr_time:
-            res.append(blood)
+    idx = 0
+    while idx < len(bloods):
+        if bloods[idx].use_by > curr_time:
+            res.append(bloods[idx])
+        idx += 1
     return res
 
 def filter_expired_blood(bloods: list, curr_time: int) -> list:
     res = []
-    blood: Blood
-    for blood in bloods:
-        if blood.use_by <= curr_time :
-            res.append(blood)
+    idx = 0
+    while idx < len(bloods):
+        if bloods[idx].use_by <= curr_time:
+            res.append(bloods[idx])
+        idx += 1
     return res
 
 def filter_good_blood(bloods: list) -> list:
     res = []
-    blood: Blood
-    for blood in bloods:
-        if blood.test_state == BloodTestState.GOOD:    # == 2
-            res.append(blood)
+    idx = 0
+    while idx < len(bloods):
+        if bloods[idx].test_state == BloodTestState.GOOD:    # == 2
+            res.append(bloods[idx])
+        idx += 1
     return res
 
 def filter_in_inventory_blood(bloods: list) -> list:
     res = []
-    blood: Blood
-    for blood in bloods:
-        if blood.state == BloodState.IN_INVENTORY:     # == 1
-            res.append(blood)
+    idx = 0
+    while idx < len(bloods):
+        if bloods[idx].state == BloodState.IN_INVENTORY:     # == 1
+            res.append(bloods[idx])
+        idx += 1
     return res
 
 def filter_blood_to_send(bloods: list, curr_time: int) -> list:
