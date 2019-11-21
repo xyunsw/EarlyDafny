@@ -23,8 +23,8 @@ class Inventory {
         bloods := bloods + [blood];
     }
 
-    method request_blood(n_bag: int, blood_type: string, curr_time:int) returns (blood_to_send: seq<Blood>)
-    requires n_bag > 0;
+    method request_blood(n_bags: int, blood_type: string, curr_time:int) returns (blood_to_send: seq<Blood>)
+    requires n_bags > 0;
     requires Valid();
     modifies bloods;
     ensures Valid();
@@ -33,12 +33,19 @@ class Inventory {
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 3;   // used
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;   // good blood
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].blood_type == blood_type;
+    ensures |blood_to_send| == n_bags || |blood_to_send| == 0;
     {
         blood_to_send := filter_blood_to_send(bloods, curr_time);
         blood_to_send := filter_blood_by_type(blood_to_send, blood_type);
         assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 1;
         assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;
         mark_bloods(blood_to_send, 3);  // mark as used
+        if n_bags > |blood_to_send| {
+            blood_to_send := [];
+        }
+        else {
+            blood_to_send := blood_to_send[0..n_bags];
+        }
     }
     
     method mark_bloods(pend_bloods: seq<Blood>, state: int)

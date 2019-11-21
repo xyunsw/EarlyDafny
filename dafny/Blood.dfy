@@ -25,39 +25,17 @@ class Blood {
         state >= 1 && state <= 4 && test_state >=1 && test_state <= 3
     }
 
-    constructor()
+    constructor(id: int)
     ensures Valid();
+    modifies this;
     {
+        // initial value, same as python code
         use_by := -1;
         state := 1;
         test_state := 1;
-    }    
-
-    method is_expired(curr_time: int) returns (expired: bool)
-    // requires curr_time is correct, but we cannot prove this
-    requires Valid();
-    ensures Valid();
-    ensures expired <==> use_by >= curr_time;
-    {
-        if (curr_time > use_by){
-            expired := false;
-        }
-        else {
-            expired := true;
-        }
+        this.id := id;
     }
     
-    method is_good_blood() returns (result: bool)
-    requires Valid();
-    ensures Valid();
-    ensures result == (test_state == 2)
-    {
-        if(test_state == 2){
-            result := true;
-        } else{
-            result := false;
-        }
-    }
 }
 
 

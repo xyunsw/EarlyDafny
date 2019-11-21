@@ -82,17 +82,6 @@ class Blood(ABC):
         else:
             raise TypeError(f"unexpected type of state: {type(state)}")
 
-    def is_expired0(self):
-        return int(time.time()) >= self._use_by_time
-
-    def is_good_blood(self):
-        #print(f"my state is {self._test_state}, good is {BloodTestState.GOOD}, equals? {BloodTestState.GOOD == self._test_state}")
-        return self._test_state == BloodTestState.GOOD
-
-    def serialize(self):
-        pass
-
-
 
 class BloodTestState(Enum):
     NOT_TESTED = 1
