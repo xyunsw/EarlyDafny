@@ -26,6 +26,7 @@ class Blood {
     }
 
     constructor(id: int)
+
     ensures Valid();
     modifies this;
     {
