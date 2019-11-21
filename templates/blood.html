@@ -2,7 +2,7 @@
 {% block content %}
 
 <h2>Blood {{ bid }}</h2>
-<div>
+<div class="form_container">
     <form method="POST">
         <div style="display: flex; margin-bottom: 25px">
             <label style="width: 200px">Use By Date:</label>
@@ -56,6 +56,9 @@
 
         let use_by = document.getElementsByName("use_by")[0];
         mutubleElemTimeTransfer(use_by, "value");
+        $().ready(function(){
+            $("#tag_3").css("background","white");
+        });
     </script>
 </div>
 
