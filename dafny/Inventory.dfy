@@ -1,16 +1,6 @@
 include "Blood.dfy"
 include "BloodFilter.dfy"
 
-function toMultiset(input: array<Blood>): multiset<Blood>
-requires input != null;
-requires forall i :: 0 <= i < input.Length ==> input[i] != null;
-//ensures forall i :: 0 <= i < |res| ==> res[i] != null;
-//ensures forall x :: x in res ==> x != null;
-reads input
-{
-    multiset(input[..])
-}
-
 
 class Inventory {
     var bloods: seq<Blood>;
@@ -77,18 +67,6 @@ class Inventory {
         }
         assert forall i: int :: 0 <= i < |pend_bloods| ==> pend_bloods[i].state == state;
     }
-    
-    method get_blood_by_id(id: int) returns(blood: Blood)
-    modifies bloods;
-    requires 0 <= id < |bloods|;
-    requires Valid();
-    ensures exists i: int | 0 <= i < |bloods| :: blood == bloods[i];
-    ensures Valid();
-    {
-        blood := bloods[id];
-    }
-    
-
 }
 
 
