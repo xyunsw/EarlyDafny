@@ -101,7 +101,9 @@ class Inventory(object):
         # bf = BloodFilter()
         res = opt.get('id', None)
         if res is not None:
-            bloods = filter_blood_by_id(bloods, int(res))
+            idx = search_blood_by_id(bloods, int(res))
+            if idx != -1:
+                bloods = [bloods[idx]]
         res = opt.get('type')
         if res is not None:
             bloods = filter_blood_by_type(bloods, res)

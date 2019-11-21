@@ -28,7 +28,8 @@ reads set m | 0 <= m < bloods.Length :: bloods[m]
 }
 
 
-// verifies BloodFilter.py::sort_blood_by_useby_asc(bloods: list)
+// verifies sort_blood_by_useby_asc(bloods: list) BloodFilter.py
+// other "sort_blood_by_*" functions are also implemented using the same algorithm
 method sort_blood_by_useby_asc(bloods: array<Blood>)
 requires bloods != null;
 requires forall i :: 0 <= i < bloods.Length ==> bloods[i] != null;
@@ -72,6 +73,7 @@ modifies bloods;
 }
 
 
+// verifies search_blood_by_id in BloodFilter.py
 method search_blood_by_id(bloods: seq<Blood>, id: int) returns(idx: int)
 requires forall i :: 0 <= i < |bloods| ==> bloods[i] != null;
 ensures forall i :: 0 <= i < |bloods| ==> bloods[i] != null;
@@ -95,6 +97,7 @@ ensures idx == -1 ==> (forall i :: 0 <= i < |bloods| ==> bloods[i].id != id);
 }
 
 
+// verifies filter_not_expired_blood in BloodFilter.py
 method filter_not_expired_blood(bloods: seq<Blood>, curr_time: int) returns(res: seq<Blood>)
 // requires curr_time is correct
 requires forall i: int :: 0 <= i < |bloods| ==> bloods[i] != null;   // for dafny 1.9.7 compatible
@@ -124,6 +127,8 @@ ensures forall i :: 0 <= i < |res| ==> (res[i] in bloods);
     assert forall i: int :: 0 <= i < |res| ==> res[i] != null;
 }
 
+
+// verifies filter_blood_by_state in BloodFilter.py
 method filter_blood_by_state(bloods: seq<Blood>, blood_state: int) returns (res: seq<Blood>)
 requires forall i: int :: 0 <= i < |bloods| ==> bloods[i] != null;
 ensures forall i: int :: 0 <= i < |res| ==> res[i] != null;
@@ -146,6 +151,8 @@ ensures forall i :: 0 <= i < |res| ==> (res[i] in bloods);
     }
 }
 
+
+// verifies filter_blood_by_test_state in BloodFilter.py
 method filter_blood_by_test_state(bloods: seq<Blood>, blood_test_state: int) returns (res: seq<Blood>)
 requires forall i: int :: 0 <= i < |bloods| ==> bloods[i] != null;
 ensures forall i: int :: 0 <= i < |res| ==> res[i] != null;
@@ -169,6 +176,7 @@ ensures forall i :: 0 <= i < |res| ==> (res[i] in bloods);
 }
 
 
+// verifies filter_blood_by_type in BloodFilter.py
 method filter_blood_by_type(bloods: seq<Blood>, blood_type: string) returns (res: seq<Blood>)
 requires forall i:int :: 0 <= i < |bloods| ==> bloods[i] != null;
 ensures forall i: int :: 0 <= i < |res| ==> res[i] != null;
@@ -192,6 +200,7 @@ ensures forall i :: 0 <= i < |res| ==> (res[i] in bloods);
 }
 
 
+// verifies filter_blood_to_send in BloodFilter.py
 method filter_blood_to_send(bloods: seq<Blood>, curr_time: int) returns (res3: seq<Blood>)
 requires forall i: int :: 0 <= i < |bloods| ==> bloods[i] != null;
 ensures forall i: int :: 0 <= i < |res3| ==> res3[i] != null;
