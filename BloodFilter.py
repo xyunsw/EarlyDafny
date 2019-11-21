@@ -86,7 +86,7 @@ def filter_expired_blood(bloods: list, curr_time: int) -> list:
     res = []
     blood: Blood
     for blood in bloods:
-        if blood.use_by <= curr_time:
+        if blood.use_by <= curr_time :
             res.append(blood)
     return res
 

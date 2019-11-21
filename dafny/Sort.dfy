@@ -88,9 +88,9 @@ method Main() {
     // var a := new int[3];
     // var b := new int[2];
     // a := a + b;
-    //var c: array<Blood> := new Blood[1];
-    //c[0] := b;
-    //var m: multiset<Blood> := multiset(c[..]);
+    // var c: array<Blood> := new Blood[1];
+    // c[0] := b;
+    // var m: multiset<Blood> := multiset(c[..]);
 
 }
 
