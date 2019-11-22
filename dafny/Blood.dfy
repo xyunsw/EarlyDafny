@@ -25,14 +25,13 @@ class Blood {
         state >= 1 && state <= 4 && test_state >=1 && test_state <= 3
     }
 
-    constructor(id: int, used_by:int)
+    constructor(id: int)
     ensures Valid();
     modifies this;
-    ensures this.use_by == used_by && state == 1 && test_state == 1 && id == this.id;
+    ensures state == 1 && test_state == 1 && id == this.id;
     {
         // initial value, same as python code
-        // use_by := -1;
-        this.use_by := used_by;
+        use_by := -1;
         state := 1;
         test_state := 1;
         this.id := id;

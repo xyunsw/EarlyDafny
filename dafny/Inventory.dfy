@@ -78,6 +78,25 @@ class Inventory {
         }
         assert forall i: int :: 0 <= i < |pend_bloods| ==> pend_bloods[i].state == state;
     }
+
+    method update_blood(id: int, use_by: int, state: int, test_state: int, blood_type: string)
+    requires 0 <= id < |bloods|;
+    requires Valid();
+    modifies bloods;
+    ensures Valid();
+    ensures 0 <= id < |bloods|;
+    ensures bloods[id].use_by == use_by;
+    ensures bloods[id].state == state;
+    ensures bloods[id].test_state == test_state;
+    ensures bloods[id].blood_type == blood_type;
+    {
+        var blood := bloods[id];
+        blood.use_by := use_by;
+        blood.state := state;
+        blood.test_state := test_state;
+        blood.blood_type := blood_type;
+    }
+
 }
 
 

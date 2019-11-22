@@ -86,9 +86,13 @@ class Inventory(object):
     def get_blood_by_id(self, id: int) -> Blood:
         return self._bloods[id]
 
-    def update_blood(self, id: int, new_blood: Blood):
-        self._bloods[id] = new_blood
-        new_blood.id = id
+    def update_blood(self, id: int, use_by: int, state: int, test_state: int, feedback: str, type: str):
+        blood = self.get_blood_by_id(id)
+        blood.use_by = use_by
+        blood.state = state
+        blood.test_state = test_state
+        blood.feedback = feedback
+        blood.type = type
 
     def get_request_by_id(self, id: int) -> Request:
         return self._requests[id]

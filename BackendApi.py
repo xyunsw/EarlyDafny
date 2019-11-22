@@ -84,12 +84,12 @@ class BackendApi():
             new_blood: Blood = self._inventory.get_blood_by_id(id)
         except:
             return {"success": False, "msg": f"blood of id {id} not found"}
-        new_blood.use_by = int(data['use_by'])
-        new_blood.state = int(data['state'])
-        new_blood.test_state = int(data['test_state'])
-        new_blood.feedback = data['feedback']
-        new_blood.type = data['type']
-        res = self._inventory.update_blood(id, new_blood)
+        use_by = int(data['use_by'])
+        state = int(data['state'])
+        test_state = int(data['test_state'])
+        feedback = data['feedback']
+        type = data['type']
+        res = self._inventory.update_blood(id, use_by, state, test_state, feedback, type)
         return {"success": True}
 
     def request_to_dict(self, req: Request) -> dict:
