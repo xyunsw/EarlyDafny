@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Donation History</h2>
+<div class="form_container">
+    <table style="margin:auto">
+        <thead>
+            <td> Donating time </td>
+            <td> Test state </td>
+            <td> Feedback </td>
+        </thead>
+        <tbody>
+        {% for h in history %}
+            <tr>
+                <td class="immutable_timestamp">{{ h['add_time'] }}</td>
+                <td name="state">{{ h['state'] }}</td>
+                <td name="feedback">{{ h['feedback'] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

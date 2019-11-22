@@ -40,11 +40,17 @@ class BackendApi():
         if data['org']['name'] == "" or data['org']['address'] == "" or data['org']['phone'] == "":
             return {"success": False, "msg": "Please complete organization information"}
         org = Organization(data['org']['name'], data['org']['address'], data['org']['phone'])
-        res = self._inventory.request_blood(n_bags, data['blood_type'], org, int(time.time()))
+        res = self._inventory.request_blood(n_bags, data['blood_type'], org)
         dbgprint(f"request blood: {data}")
         if res is None:
             return {"success": False, "msg": "Insufficient blood"}
         return {"success": True, "blood": res}
+    
+    def donation_history(self, data: dict):
+        if data['donor_name'] == "" or data['donor_id'] == "":
+            return {"success": False, "msg": "Please enter donor's info"}
+        hist = self._inventory.get_blood_by_donor(data['donor_name'], data['donor_id'])
+        return {"success": True, "history": hist}
 
     def blood_to_dict(self, blood: Blood) -> dict:
         info = {}
@@ -74,10 +80,7 @@ class BackendApi():
 
     def update_blood(self, data: dict):
         id = int(data['id'])
-        try:
-            new_blood: Blood = self._inventory.get_blood_by_id(id)
-        except:
-            return {"success": False, "msg": f"blood of id {id} not found"}
+        new_blood: Blood = self._inventory.get_blood_by_id(id)
         new_blood.use_by = int(data['use_by'])
         new_blood.state = int(data['state'])
         new_blood.test_state = int(data['test_state'])

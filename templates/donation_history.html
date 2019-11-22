@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Donation History</h2>
+<div class="form_container">
+    <form method="POST">
+        <div style="display: flex; margin-bottom: 25px">
+            <label style="width: 250px">Donor name: </label>
+            <input style="margin-left: 25px" type="text" name="donor_name" />
+        </div>
+        <div style="display: flex; margin-bottom: 25px">
+            <label style="width: 250px">Donor ID: </label>
+            <input style="margin-left: 25px" type="text" name="donor_id" />
+        </div>
+        <div style="display: flex; margin-bottom: 25px">
+            <input type="submit" class="submit_buttom" value="Check"/>
+        </div>
+    </form>
+</div>
+
+<script>
+    $().ready(function(){
+        $("#tag_5").css("background","white");
+    });
+</script>
+{% endblock %}

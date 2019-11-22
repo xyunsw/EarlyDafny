@@ -91,7 +91,21 @@ def show_requests():
 def get_blood_level_by():
     res = api.get_blood_level_by(request.json)
     return Response(json.dumps(res), 200, content_type="application/json")
-
+    
+@page.route('/donation_history', methods=['GET', 'POST'])
+def donation_history():
+    if request.method == 'GET':
+        return render_template('donation_history.html')
+    else:
+        res = api.donation_history(request.form)
+        if not res['success']:
+            return render_template('error.html', err_msg=res['msg'])
+        return render_template('history_list.html', history = res['history'])
+        
+@page.route('/donation_history/history_list', methods=['GET'])
+def history_list():
+    res = api.donation_history(request.form)
+    return render_template('history_list.html', history = res['history'])
 
 
 
