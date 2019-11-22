@@ -53,14 +53,20 @@ method Test(){
     assert blood1 in inventory.bloods;
 
     //test request_blood 
-    
-    
+
     var b1 := new Blood(1);
     var b2 := new Blood(2);
     var bloods: seq<Blood> := [b1, b2];
 
     var seq_bloods := inventory.request_blood(bloods, 1,"B",0);
-    //assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 0;
+    assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 0;
+
+    //test mark_blood
+    inventory.mark_bloods(bloods,2);
+    assert forall i : int :: 0 <= i < |bloods| ==> bloods[i].state == 2;
+
+    //test update_blood
+    inventory.update_blood(0,123,1,1,"A");
 
     //test sort_blood_by_useby_asc
     //change the type seq to array
@@ -98,7 +104,4 @@ method Test(){
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 0;
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].state == 1;
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].test_state == 2;
-
-
-
 }

@@ -77,8 +77,10 @@ modifies bloods;
 method search_blood_by_id(bloods: seq<Blood>, id: int) returns(idx: int)
 requires forall i :: 0 <= i < |bloods| ==> bloods[i] != null;
 ensures forall i :: 0 <= i < |bloods| ==> bloods[i] != null;
-ensures idx >= 0 ==> idx < |bloods| && bloods[idx].id == id;
+ensures idx < |bloods|;
+ensures idx >= 0 ==>  bloods[idx].id == id;
 ensures idx == -1 ==> (forall i :: 0 <= i < |bloods| ==> bloods[i].id != id);
+ensures idx == -1 || 0 <= idx < |bloods|;
 {
     idx := 0;
 

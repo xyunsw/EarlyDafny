@@ -35,6 +35,7 @@ class Inventory {
     //modifies this;
     modifies set s | 0 <= s < |bloods| :: bloods[s];
     ensures Valid();
+    requires forall i :: 0 <= i < |bloods| ==> bloods[i] != null;
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i] != null;                 //make 1.9.7 complier compatible
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].use_by > curr_time;      
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 3;          // used
@@ -87,7 +88,7 @@ class Inventory {
     method update_blood(id: int, use_by: int, state: int, test_state: int, blood_type: string)
     requires 0 <= id < |bloods|;
     requires Valid();
-    modifies bloods;
+    modifies this.bloods;
     ensures Valid();
     ensures 0 <= id < |bloods|;
     ensures bloods[id].use_by == use_by;
