@@ -48,18 +48,20 @@ class Inventory(object):
         else:
             raise ValueError(f"invalid source: {source}")
         self._bloods.append(blood)
+        self._lc.check_level()
         return len(self._bloods) - 1
     
-    def request_blood(self, n_bags: int, blood_type: str, org: Organization) -> list:
-        bloods = filter_blood_to_send(self._bloods, int(time.time()))
+    def request_blood(self, n_bags: int, blood_type: str, org: Organization, curr_time: int) -> list:
+        bloods = filter_blood_to_send(self._bloods, curr_time)
         bloods = filter_blood_by_type(bloods, blood_type)
         if n_bags > len(bloods) or n_bags <= 0:
             return None
         bloods_to_send = bloods[0:n_bags]
         self.mark_bloods(bloods_to_send, BloodState.USED)
-        print(f"marking blood: {bloods_to_send}")
+        # print(f"marking blood: {bloods_to_send}")
         size = len(self._requests)
         self._requests.append(Request(size, org, bloods_to_send))
+        self._lc.check_level()
         return bloods_to_send
 
     def mark_bloods(self, bloods: list, state: BloodState):
@@ -98,11 +100,15 @@ class Inventory(object):
     # see blood_inventory.html to check what are inside opt
     def get_bloods_by_conditions(self, opt: dict) -> list:
         bloods = list(self._bloods)
-        print(f"id1: {id(bloods)}, id2: {id(self._bloods)}")
+        # print(f"id1: {id(bloods)}, id2: {id(self._bloods)}")
         # bf = BloodFilter()
         res = opt.get('id', None)
         if res is not None:
-            bloods = filter_blood_by_id(bloods, int(res))
+            idx = search_blood_by_id(bloods, int(res))
+            if idx != -1:
+                bloods = [bloods[idx]]
+            else:
+                bloods = []
         res = opt.get('type')
         if res is not None:
             bloods = filter_blood_by_type(bloods, res)

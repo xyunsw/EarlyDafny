@@ -40,7 +40,7 @@ class BackendApi():
         if data['org']['name'] == "" or data['org']['address'] == "" or data['org']['phone'] == "":
             return {"success": False, "msg": "Please complete organization information"}
         org = Organization(data['org']['name'], data['org']['address'], data['org']['phone'])
-        res = self._inventory.request_blood(n_bags, data['blood_type'], org)
+        res = self._inventory.request_blood(n_bags, data['blood_type'], org, int(time.time()))
         dbgprint(f"request blood: {data}")
         if res is None:
             return {"success": False, "msg": "Insufficient blood"}
@@ -80,7 +80,10 @@ class BackendApi():
 
     def update_blood(self, data: dict):
         id = int(data['id'])
-        new_blood: Blood = self._inventory.get_blood_by_id(id)
+        try:
+            new_blood: Blood = self._inventory.get_blood_by_id(id)
+        except:
+            return {"success": False, "msg": f"blood of id {id} not found"}
         new_blood.use_by = int(data['use_by'])
         new_blood.state = int(data['state'])
         new_blood.test_state = int(data['test_state'])
