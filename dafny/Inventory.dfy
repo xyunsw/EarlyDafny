@@ -28,7 +28,7 @@ class Inventory {
         bloods := bloods + [blood];
     }
 
-    method request_blood(n_bags: int, blood_type: string, curr_time:int) returns (blood_to_send: seq<Blood>)
+    method request_blood(bloods: seq<Blood>, n_bags: int, blood_type: string, curr_time:int) returns (blood_to_send: seq<Blood>)
     requires n_bags > 0;
     requires Valid();
     //modifies bloods;

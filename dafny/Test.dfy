@@ -45,53 +45,56 @@ method Test(){
     blood0.blood_type := "A";
     blood1.blood_type := "B";
 
-    var Inventory := new Inventory();
+    var inventory := new Inventory();
     //test add_blood
-    Inventory.add_blood(blood0);
-    assert blood0 in Inventory.bloods;
-    Inventory.add_blood(blood1);
-    assert blood1 in Inventory.bloods;
+    inventory.add_blood(blood0);
+    assert blood0 in inventory.bloods;
+    inventory.add_blood(blood1);
+    assert blood1 in inventory.bloods;
 
     //test request_blood 
-    var seq_bloods := Inventory.request_blood(1,"B",0);
-    var b := new Blood(1);
-    var s := [b];
-    s[0].use_by := 1;
+    
+    
+    var b1 := new Blood(1);
+    var b2 := new Blood(2);
+    var bloods: seq<Blood> := [b1, b2];
+
+    var seq_bloods := inventory.request_blood(bloods, 1,"B",0);
     //assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 0;
 
     //test sort_blood_by_useby_asc
     //change the type seq to array
-    var array_bloods := changeType(Inventory.bloods);
+    var array_bloods := changeType(inventory.bloods);
     sort_blood_by_useby_asc(array_bloods);
     assert forall i,j :: 0 <= i < j < array_bloods.Length ==> array_bloods[i].use_by <= array_bloods[j].use_by;
 
     //test search_blood_by_id
-    var idx := search_blood_by_id(Inventory.bloods,1);
-    assert idx >= 0 ==> idx < |Inventory.bloods| && Inventory.bloods[idx].id == 1;
-    assert idx == -1 ==> (forall i :: 0 <= i < |Inventory.bloods| ==> Inventory.bloods[i].id != 1);
+    var idx := search_blood_by_id(inventory.bloods,1);
+    assert idx >= 0 ==> idx < |inventory.bloods| && inventory.bloods[idx].id == 1;
+    assert idx == -1 ==> (forall i :: 0 <= i < |inventory.bloods| ==> inventory.bloods[i].id != 1);
 
-    idx := search_blood_by_id(Inventory.bloods,100);
-    assert idx >= 0 ==> idx < |Inventory.bloods| && Inventory.bloods[idx].id == 100;
-    assert idx == -1 ==> (forall i :: 0 <= i < |Inventory.bloods| ==> Inventory.bloods[i].id != 100);
+    idx := search_blood_by_id(inventory.bloods,100);
+    assert idx >= 0 ==> idx < |inventory.bloods| && inventory.bloods[idx].id == 100;
+    assert idx == -1 ==> (forall i :: 0 <= i < |inventory.bloods| ==> inventory.bloods[i].id != 100);
 
     //test filter_not_expired_blood
-    seq_bloods := filter_not_expired_blood(Inventory.bloods,12);
+    seq_bloods := filter_not_expired_blood(inventory.bloods,12);
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 12;
 
     //test filter_blood_by_state2
-    seq_bloods := filter_blood_by_state(Inventory.bloods,1);
+    seq_bloods := filter_blood_by_state(inventory.bloods,1);
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].state == 1;
 
     //test filter_blood_by_test_state
-    seq_bloods := filter_blood_by_test_state(Inventory.bloods,2);
+    seq_bloods := filter_blood_by_test_state(inventory.bloods,2);
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].test_state == 2;
 
     //test filter_blood_by_type
-    seq_bloods := filter_blood_by_type(Inventory.bloods,"A");
+    seq_bloods := filter_blood_by_type(inventory.bloods,"A");
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].blood_type == "A";
 
     //test filter_blood_to_send
-    seq_bloods := filter_blood_to_send(Inventory.bloods, 0);
+    seq_bloods := filter_blood_to_send(inventory.bloods, 0);
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 0;
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].state == 1;
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].test_state == 2;
