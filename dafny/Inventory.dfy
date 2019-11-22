@@ -21,6 +21,8 @@ class Inventory {
     requires Valid();
     requires blood != null;
     ensures Valid();
+    ensures old(|bloods|) + 1 == |bloods|;
+    ensures blood in bloods;
     modifies this;
     {
         bloods := bloods + [blood];
@@ -29,19 +31,21 @@ class Inventory {
     method request_blood(n_bags: int, blood_type: string, curr_time:int) returns (blood_to_send: seq<Blood>)
     requires n_bags > 0;
     requires Valid();
-    modifies bloods;
+    //modifies bloods;
+    //modifies this;
+    modifies set s | 0 <= s < |bloods| :: bloods[s];
     ensures Valid();
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i] != null;                 //make 1.9.7 complier compatible
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].use_by > curr_time;      
-    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 3;   // used
-    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;   // good blood
+    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 3;          // used
+    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;     // good blood
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].blood_type == blood_type;
     ensures |blood_to_send| == n_bags || |blood_to_send| == 0;
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i] in bloods;
     {
         blood_to_send := filter_blood_to_send(bloods, curr_time);
         blood_to_send := filter_blood_by_type(blood_to_send, blood_type);
-        assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 1;   // make sure blood is in inventory
+        assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 1;       // make sure blood is in inventory
         assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;
         mark_bloods(blood_to_send, 3);  // mark as used
         if n_bags > |blood_to_send| {
@@ -57,12 +61,13 @@ class Inventory {
     requires state == 1 || state == 2 || state == 3 || state == 4
     requires Valid();
     ensures Valid();
+    modifies set s | 0 <= s < |pend_bloods| :: pend_bloods[s];
     ensures forall i :: 0 <= i < |pend_bloods| ==> pend_bloods[i].state == state;
     ensures forall i :: 0 <= i < |pend_bloods| ==> pend_bloods[i].test_state == old(pend_bloods[i].test_state);
     ensures forall i :: 0 <= i < |pend_bloods| ==> pend_bloods[i].use_by == old(pend_bloods[i].use_by);
     ensures forall i :: 0 <= i < |pend_bloods| ==> pend_bloods[i].blood_type == old(pend_bloods[i].blood_type);
     ensures multiset(pend_bloods) == multiset(old(pend_bloods));
-    modifies pend_bloods;
+    //modifies pend_bloods;
     {
         var idx := 0;
         while(idx < |pend_bloods|)

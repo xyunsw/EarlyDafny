@@ -42,10 +42,22 @@ method Test(){
     blood1.use_by := 1;
     assert blood1.use_by == 1 && blood1.state == 1 && blood1.test_state == 1 && blood1.id == 1;
 
-    var Inventory := new Inventory();
-    Inventory.add_blood(blood0);
-    Inventory.add_blood(blood1);
+    blood0.blood_type := "A";
+    blood1.blood_type := "B";
 
+    var Inventory := new Inventory();
+    //test add_blood
+    Inventory.add_blood(blood0);
+    assert blood0 in Inventory.bloods;
+    Inventory.add_blood(blood1);
+    assert blood1 in Inventory.bloods;
+
+    //test request_blood 
+    var seq_bloods := Inventory.request_blood(1,"B",0);
+    var b := new Blood(1);
+    var s := [b];
+    s[0].use_by := 1;
+    //assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 0;
 
     //test sort_blood_by_useby_asc
     //change the type seq to array
@@ -63,10 +75,10 @@ method Test(){
     assert idx == -1 ==> (forall i :: 0 <= i < |Inventory.bloods| ==> Inventory.bloods[i].id != 100);
 
     //test filter_not_expired_blood
-    var seq_bloods := filter_not_expired_blood(Inventory.bloods,12);
+    seq_bloods := filter_not_expired_blood(Inventory.bloods,12);
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 12;
 
-    //test filter_blood_by_state
+    //test filter_blood_by_state2
     seq_bloods := filter_blood_by_state(Inventory.bloods,1);
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].state == 1;
 
@@ -75,8 +87,6 @@ method Test(){
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].test_state == 2;
 
     //test filter_blood_by_type
-    blood0.blood_type := "A";
-    blood1.blood_type := "B";
     seq_bloods := filter_blood_by_type(Inventory.bloods,"A");
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].blood_type == "A";
 
@@ -85,4 +95,7 @@ method Test(){
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].use_by > 0;
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].state == 1;
     assert forall i: int :: 0 <= i < |seq_bloods| ==> seq_bloods[i].test_state == 2;
+
+
+
 }
