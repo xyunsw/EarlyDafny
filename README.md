@@ -25,3 +25,6 @@ python appmain.py
 pip3 install --user flask
 python3 appmain.py
 ```
+
+![](https://moevps.dynu.net/blank.png?from=EarlyDafny_github_main)  
+

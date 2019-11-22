@@ -65,8 +65,6 @@ method Test(){
     inventory.mark_bloods(bloods,2);
     assert forall i : int :: 0 <= i < |bloods| ==> bloods[i].state == 2;
 
-    //test update_blood
-    inventory.update_blood(0,123,1,1,"A");
 
     //test sort_blood_by_useby_asc
     //change the type seq to array
