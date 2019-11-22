@@ -11,6 +11,7 @@ class Inventory {
         forall i: int :: 0 <= i < |bloods| ==> bloods[i] != null
     }
     constructor() 
+    ensures Valid();
     modifies this;
     {
         bloods := [];
@@ -18,6 +19,8 @@ class Inventory {
 
     method add_blood(blood : Blood)
     requires Valid();
+    requires blood != null;
+    ensures Valid();
     modifies this;
     {
         bloods := bloods + [blood];
