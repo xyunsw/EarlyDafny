@@ -34,10 +34,11 @@ class Inventory {
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;   // good blood
     ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].blood_type == blood_type;
     ensures |blood_to_send| == n_bags || |blood_to_send| == 0;
+    ensures forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i] in bloods;
     {
         blood_to_send := filter_blood_to_send(bloods, curr_time);
         blood_to_send := filter_blood_by_type(blood_to_send, blood_type);
-        assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 1;
+        assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].state == 1;   // make sure blood is in inventory
         assert forall i: int :: 0 <= i < |blood_to_send| ==> blood_to_send[i].test_state == 2;
         mark_bloods(blood_to_send, 3);  // mark as used
         if n_bags > |blood_to_send| {
